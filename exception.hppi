@@ -1,0 +1,17 @@
+#ifndef __RRT_EXCEPTION_HPPI
+#define __RRT_EXCEPTION_HPPI
+
+#include <cerrno>
+#include <system_error>
+
+#define THROW_SYSTEM_ERROR \
+    throw std::system_error(errno, std::system_category())
+#define THROW_SYSTEM_ERROR_IF(condition) \
+    if (condition) \
+        THROW_SYSTEM_ERROR
+#define THROW_SYSTEM_ERROR_STD(retval) \
+    THROW_SYSTEM_ERROR_IF(retval<0)
+#define THROW_NOT_IMPLEMENTED \
+    throw std::logic_error("not implemented yet")
+
+#endif
