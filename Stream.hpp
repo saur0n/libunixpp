@@ -16,6 +16,8 @@ public:
     Stream(const Stream &other);
     /** Duplicate a file descriptor on the specified one **/
     Stream(const Stream &other, int newfd);
+    /** Duplicate a file descriptor on the specified one **/
+    Stream(const Stream &other, int newfd, int flags);
     /** Close **/
     virtual ~Stream();
     /** Reposition read//write file offset **/
@@ -34,6 +36,12 @@ public:
     unsigned getFlags();
     /** Set file descritor flags **/
     void setFlags(unsigned flags);
+    /** Returns file status flags **/
+    unsigned getStatusFlags();
+    /** Set file status flags **/
+    void setStatusFlags(unsigned flags);
+    /** Returns ID of process receiving signals about events on the descriptor **/
+    int getOwner();
     
 protected:
     /** Initialize by file descriptor **/
@@ -42,6 +50,10 @@ protected:
     int getDescriptor() const { return fd; }
     /** Perform an operation on file descriptor **/
     unsigned ioctl(int request, void * argp);
+    /** Manipulate file descriptor **/
+    unsigned fcntl(int cmd);
+    /** Manipulate file descriptor **/
+    unsigned fcntl(int cmd, int arg);
     
 private:
     int fd;

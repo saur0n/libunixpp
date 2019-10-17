@@ -1,3 +1,4 @@
+#include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include "exception.hppi"
@@ -9,9 +10,11 @@ Stream::Stream(const Stream &other) : fd(dup(other.fd)) {
     THROW_SYSTEM_ERROR_IF(fd<0);
 }
 
-Stream::Stream(const Stream &other, int newfd) : fd(dup2(other.fd, newfd)) {
-    THROW_SYSTEM_ERROR_IF(fd<0);
-}
+Stream::Stream(const Stream &other, int newfd) :
+        Stream(dup2(other.fd, newfd)) {}
+
+Stream::Stream(const Stream &other, int newfd, int flags) :
+        Stream(dup3(other.fd, newfd, flags)) {}
 
 Stream::~Stream() {
     close(fd);
@@ -53,11 +56,23 @@ void Stream::stat(struct stat * statbuf) {
 }
 
 unsigned Stream::getFlags() {
-    THROW_NOT_IMPLEMENTED;
+    return fcntl(F_GETFD);
 }
 
 void Stream::setFlags(unsigned flags) {
-    THROW_NOT_IMPLEMENTED;
+    fcntl(F_SETFD, flags);
+}
+
+unsigned Stream::getStatusFlags() {
+    return fcntl(F_GETFL);
+}
+
+void Stream::setStatusFlags(unsigned flags) {
+    fcntl(F_SETFL, flags);
+}
+
+int Stream::getOwner() {
+    return fcntl(fd, F_GETOWN);
 }
 
 Stream::Stream(int fd) : fd(fd) {
@@ -66,6 +81,18 @@ Stream::Stream(int fd) : fd(fd) {
 
 unsigned Stream::ioctl(int request, void * argp) {
     int result=::ioctl(fd, request, argp);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return unsigned(result);
+}
+
+unsigned Stream::fcntl(int cmd) {
+    int result=::fcntl(fd, cmd);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return unsigned(result);
+}
+
+unsigned Stream::fcntl(int cmd, int arg) {
+    int result=::fcntl(fd, cmd, arg);
     THROW_SYSTEM_ERROR_IF(result<0);
     return unsigned(result);
 }
