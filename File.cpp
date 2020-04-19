@@ -1,3 +1,10 @@
+/*******************************************************************************
+ *  libunix++: C++ wrapper for Linux system calls
+ *  File operations
+ *  
+ *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ ******************************************************************************/
+
 #include <sys/stat.h>
 #include <sys/vfs.h>
 #include <sys/xattr.h>

@@ -1,5 +1,12 @@
-#ifndef __RRT_FILE_HPP
-#define __RRT_FILE_HPP
+/*******************************************************************************
+ *  libunix++: C++ wrapper for Linux system calls
+ *  File operations
+ *  
+ *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ ******************************************************************************/
+
+#ifndef __UNIXPP_FILE_HPP
+#define __UNIXPP_FILE_HPP
 
 #include <fcntl.h>
 #include <sys/file.h>

@@ -1,5 +1,12 @@
-#ifndef __RRT_STREAM_HPP
-#define __RRT_STREAM_HPP
+/*******************************************************************************
+ *  libunix++: C++ wrapper for Linux system calls
+ *  ...
+ *  
+ *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ ******************************************************************************/
+
+#ifndef __UNIXPP_STREAM_HPP
+#define __UNIXPP_STREAM_HPP
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -42,6 +49,10 @@ public:
     void setStatusFlags(unsigned flags);
     /** Returns ID of process receiving signals about events on the descriptor **/
     int getOwner();
+    /** Write a file into the file descriptor **/
+    size_t sendfile(Stream &from, size_t count);
+    /** Write a file into the file descriptor **/
+    size_t sendfile(Stream &from, off_t &offset, size_t count);
     
 protected:
     /** Initialize by file descriptor **/

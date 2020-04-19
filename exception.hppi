@@ -1,5 +1,12 @@
-#ifndef __RRT_EXCEPTION_HPPI
-#define __RRT_EXCEPTION_HPPI
+/*******************************************************************************
+ *  libunix++: C++ wrapper for Linux system calls
+ *  Exception handling macros, for internal use
+ *  
+ *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ ******************************************************************************/
+
+#ifndef __UNIXPP_EXCEPTION_HPPI
+#define __UNIXPP_EXCEPTION_HPPI
 
 #include <cerrno>
 #include <system_error>

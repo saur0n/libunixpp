@@ -1,5 +1,13 @@
+/*******************************************************************************
+ *  libunix++: C++ wrapper for Linux system calls
+ *  ...
+ *  
+ *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ ******************************************************************************/
+
 #include <fcntl.h>
 #include <sys/ioctl.h>
+#include <sys/sendfile.h>
 #include <sys/stat.h>
 #include "exception.hppi"
 #include "Stream.hpp"
@@ -73,6 +81,18 @@ void Stream::setStatusFlags(unsigned flags) {
 
 int Stream::getOwner() {
     return fcntl(fd, F_GETOWN);
+}
+
+size_t Stream::sendfile(Stream &from, size_t count) {
+    ssize_t result=::sendfile(fd, from.fd, nullptr, count);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
+size_t Stream::sendfile(Stream &from, off_t &offset, size_t count) {
+    ssize_t result=::sendfile(fd, from.fd, &offset, count);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
 }
 
 Stream::Stream(int fd) : fd(fd) {
