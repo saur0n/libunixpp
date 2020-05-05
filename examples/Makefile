@@ -1,9 +1,22 @@
-all: sdelete
+################################################################################
+#   libunix++: C++ wrapper for Linux system calls
+#   Build file for examples
+#   
+#   © 2020, Sauron <libunixpp@saur0n.science>
+################################################################################
+
+CXXFLAGS=-Wall -Wextra -Os
+LIBRARIES=-lstdc++ -lunix++
+
+all: ls sdelete
 
 clean:
-	rm -f sdelete
+	rm -f ls sdelete
+
+ls: ls.cpp
+	gcc $(CXXFLAGS) -o $@ $(LIBRARIES) $<
 
 sdelete: sdelete.cpp
-	gcc -Wall -Wextra -Os -o sdelete -lstdc++ -lunix++ sdelete.cpp
+	gcc $(CXXFLAGS) -o $@ $(LIBRARIES) $<
 
 .PHONY: all clean
