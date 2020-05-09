@@ -8,11 +8,13 @@
 #ifndef __UNIXPP_FILESYSTEM_HPP
 #define __UNIXPP_FILESYSTEM_HPP
 
+#include <unistd.h>
+
 namespace nx {
 
 namespace FileSystem {
-    /**/
-    int access(const char * pathname, int mode);
+    /** Check user's permissions for a file **/
+    bool access(const char * pathname, int mode=F_OK);
     /**/
     int chdir(const char * path);
     /**/
