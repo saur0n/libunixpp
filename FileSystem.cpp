@@ -44,8 +44,8 @@ string FileSystem::getcwd() {
     return buffer;
 }
 
-int FileSystem::lchown(const char * pathname, uid_t owner, gid_t group) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::lchown(const char * pathname, uid_t owner, gid_t group) {
+    NORMAL_OP_WRAPPER(::lchown(pathname, owner, group));
 }
 
 int FileSystem::link(const char * oldpath, const char * newpath) {

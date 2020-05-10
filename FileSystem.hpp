@@ -25,8 +25,8 @@ namespace FileSystem {
     void chown(const char * pathname, uid_t owner, gid_t group);
     /** Get current working directory **/
     std::string getcwd();
-    /**/
-    int lchown(const char * pathname, uid_t owner, gid_t group);
+    /** Change ownership of a file, do not follow symlinks **/
+    void lchown(const char * pathname, uid_t owner, gid_t group);
     /**/
     int link(const char * oldpath, const char * newpath);
     /**/
