@@ -37,8 +37,8 @@ namespace FileSystem {
     ssize_t readlink(const char * pathname, char * buf, size_t bufsiz);
     /**/
     int rename(const char * oldpath, const char * newpath);
-    /**/
-    int rmdir(const char * pathname);
+    /** Delete a directory **/
+    void rmdir(const char * pathname);
     /**/
     int stat(const char * pathname, struct stat * statbuf);
     /**/

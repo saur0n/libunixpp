@@ -68,8 +68,8 @@ int FileSystem::rename(const char * oldpath, const char * newpath) {
     THROW_NOT_IMPLEMENTED;
 }
 
-int FileSystem::rmdir(const char * pathname) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::rmdir(const char * pathname) {
+    NORMAL_OP_WRAPPER(::rmdir(pathname))
 }
 
 int FileSystem::stat(const char * pathname, struct stat * statbuf) {
