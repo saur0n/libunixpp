@@ -76,8 +76,14 @@ int FileSystem::stat(const char * pathname, struct stat * statbuf) {
     THROW_NOT_IMPLEMENTED;
 }
 
-int FileSystem::statfs(const char * path, struct statfs * buf) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::statfs(const char * path, FSStatistics * buf) {
+    NORMAL_OP_WRAPPER(::statfs(path, buf));
+}
+
+FileSystem::FSStatistics FileSystem::statfs(const char * path) {
+    struct statfs result;
+    FileSystem::statfs(path, &result);
+    return result;
 }
 
 void FileSystem::symlink(const char * target, const char * linkpath) {

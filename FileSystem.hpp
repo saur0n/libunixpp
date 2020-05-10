@@ -10,11 +10,14 @@
 
 #include <string>
 #include <sys/stat.h>
+#include <sys/vfs.h>
 #include <unistd.h>
 
 namespace nx {
 
 namespace FileSystem {
+    /** Filesystem statistics **/
+    typedef struct ::statfs FSStatistics;
     /** Check user's permissions for a file **/
     bool access(const char * pathname, int mode=F_OK);
     /** Change working directory **/
@@ -41,8 +44,10 @@ namespace FileSystem {
     void rmdir(const char * pathname);
     /**/
     int stat(const char * pathname, struct stat * statbuf);
-    /**/
-    int statfs(const char * path, struct statfs * buf);
+    /** Get filesystem statistics **/
+    void statfs(const char * path, FSStatistics * buf);
+    /** Get filesystem statistics **/
+    FSStatistics statfs(const char * path);
     /** Make a new name for a file **/
     void symlink(const char * target, const char * linkpath);
     /**/
