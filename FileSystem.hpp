@@ -49,8 +49,8 @@ namespace FileSystem {
     void sync();
     /**/
     int truncate(const char * pathname, off_t length);
-    /**/
-    int unlink(const char * pathname);
+    /** Delete a name and possibly the file it refers to **/
+    void unlink(const char * pathname);
     /**/
     int utimes(const char * filename, const struct timeval times[2]);
     /** Set an extended attribute value **/

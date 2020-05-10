@@ -92,8 +92,8 @@ int FileSystem::truncate(const char * pathname, off_t length) {
     THROW_NOT_IMPLEMENTED;
 }
 
-int FileSystem::unlink(const char * pathname) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::unlink(const char * pathname) {
+    NORMAL_OP_WRAPPER(::unlink(pathname))
 }
 
 int FileSystem::utimes(const char * filename, const struct timeval times[2]) {
