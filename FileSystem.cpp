@@ -88,8 +88,8 @@ void FileSystem::sync() {
     ::sync();
 }
 
-int FileSystem::truncate(const char * pathname, off_t length) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::truncate(const char * pathname, off_t length) {
+    NORMAL_OP_WRAPPER(::truncate(pathname, length));
 }
 
 void FileSystem::unlink(const char * pathname) {

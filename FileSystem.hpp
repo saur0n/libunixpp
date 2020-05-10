@@ -47,8 +47,8 @@ namespace FileSystem {
     void symlink(const char * target, const char * linkpath);
     /**/
     void sync();
-    /**/
-    int truncate(const char * pathname, off_t length);
+    /** Truncate a file to a specified length **/
+    void truncate(const char * pathname, off_t length);
     /** Delete a name and possibly the file it refers to **/
     void unlink(const char * pathname);
     /**/
