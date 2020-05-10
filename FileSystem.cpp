@@ -48,8 +48,8 @@ void FileSystem::lchown(const char * pathname, uid_t owner, gid_t group) {
     NORMAL_OP_WRAPPER(::lchown(pathname, owner, group));
 }
 
-int FileSystem::link(const char * oldpath, const char * newpath) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::link(const char * oldpath, const char * newpath) {
+    NORMAL_OP_WRAPPER(::link(oldpath, newpath));
 }
 
 int FileSystem::lstat(const char * pathname, struct stat * statbuf) {

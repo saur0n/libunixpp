@@ -27,8 +27,8 @@ namespace FileSystem {
     std::string getcwd();
     /** Change ownership of a file, do not follow symlinks **/
     void lchown(const char * pathname, uid_t owner, gid_t group);
-    /**/
-    int link(const char * oldpath, const char * newpath);
+    /** Make a new name for a file **/
+    void link(const char * oldpath, const char * newpath);
     /**/
     int lstat(const char * pathname, struct stat * statbuf);
     /**/
