@@ -56,8 +56,8 @@ int FileSystem::lstat(const char * pathname, struct stat * statbuf) {
     THROW_NOT_IMPLEMENTED;
 }
 
-int FileSystem::mkdir(const char * pathname, mode_t mode) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::mkdir(const char * pathname, mode_t mode) {
+    NORMAL_OP_WRAPPER(::mkdir(pathname, mode))
 }
 
 ssize_t readlink(const char * pathname, char * buf, size_t bufsiz) {

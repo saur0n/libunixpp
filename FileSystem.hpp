@@ -31,8 +31,8 @@ namespace FileSystem {
     void link(const char * oldpath, const char * newpath);
     /**/
     int lstat(const char * pathname, struct stat * statbuf);
-    /**/
-    int mkdir(const char * pathname, mode_t mode);
+    /** Create a directory **/
+    void mkdir(const char * pathname, mode_t mode=0700);
     /**/
     ssize_t readlink(const char * pathname, char * buf, size_t bufsiz);
     /**/
