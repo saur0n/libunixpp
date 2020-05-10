@@ -80,8 +80,8 @@ int FileSystem::statfs(const char * path, struct statfs * buf) {
     THROW_NOT_IMPLEMENTED;
 }
 
-int FileSystem::symlink(const char * target, const char * linkpath) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::symlink(const char * target, const char * linkpath) {
+    NORMAL_OP_WRAPPER(::symlink(target, linkpath));
 }
 
 void FileSystem::sync() {

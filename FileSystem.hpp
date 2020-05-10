@@ -43,8 +43,8 @@ namespace FileSystem {
     int stat(const char * pathname, struct stat * statbuf);
     /**/
     int statfs(const char * path, struct statfs * buf);
-    /**/
-    int symlink(const char * target, const char * linkpath);
+    /** Make a new name for a file **/
+    void symlink(const char * target, const char * linkpath);
     /**/
     void sync();
     /**/
