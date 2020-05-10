@@ -5,10 +5,12 @@
  *  © 2019—2020, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
+#include <linux/limits.h>
 #include "exception.hppi"
 #include "FileSystem.hpp"
 
 using namespace nx;
+using std::string;
 
 bool FileSystem::access(const char * pathname, int mode) {
     int retval=::access(pathname, mode);
@@ -32,12 +34,14 @@ void FileSystem::chmod(const char * pathname, mode_t mode) {
     NORMAL_OP_WRAPPER(::chmod(pathname, mode));
 }
 
-int FileSystem::chown(const char * pathname, uid_t owner, gid_t group) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::chown(const char * pathname, uid_t owner, gid_t group) {
+    NORMAL_OP_WRAPPER(::chown(pathname, owner, group));
 }
 
-char * FileSystem::getcwd(char * buf, size_t size) {
-    THROW_NOT_IMPLEMENTED;
+string FileSystem::getcwd() {
+    char buffer[PATH_MAX];
+    NORMAL_POP_WRAPPER(::getcwd(buffer, sizeof(buffer)));
+    return buffer;
 }
 
 int FileSystem::lchown(const char * pathname, uid_t owner, gid_t group) {

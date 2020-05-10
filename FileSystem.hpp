@@ -8,6 +8,7 @@
 #ifndef __UNIXPP_FILESYSTEM_HPP
 #define __UNIXPP_FILESYSTEM_HPP
 
+#include <string>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -20,10 +21,10 @@ namespace FileSystem {
     void chdir(const char * path);
     /** Change permissions of a file **/
     void chmod(const char * pathname, mode_t mode);
-    /**/
-    int chown(const char * pathname, uid_t owner, gid_t group);
-    /**/
-    char * getcwd(char * buf, size_t size);
+    /** Change ownership of a file **/
+    void chown(const char * pathname, uid_t owner, gid_t group);
+    /** Get current working directory **/
+    std::string getcwd();
     /**/
     int lchown(const char * pathname, uid_t owner, gid_t group);
     /**/
