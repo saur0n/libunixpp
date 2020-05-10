@@ -8,6 +8,7 @@
 #ifndef __UNIXPP_FILESYSTEM_HPP
 #define __UNIXPP_FILESYSTEM_HPP
 
+#include <sys/stat.h>
 #include <unistd.h>
 
 namespace nx {
@@ -17,8 +18,8 @@ namespace FileSystem {
     bool access(const char * pathname, int mode=F_OK);
     /** Change working directory **/
     void chdir(const char * path);
-    /**/
-    int chmod(const char * pathname, mode_t mode);
+    /** Change permissions of a file **/
+    void chmod(const char * pathname, mode_t mode);
     /**/
     int chown(const char * pathname, uid_t owner, gid_t group);
     /**/

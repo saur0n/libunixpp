@@ -28,8 +28,8 @@ void FileSystem::chdir(const char * path) {
     NORMAL_OP_WRAPPER(::chdir(path));
 }
 
-int FileSystem::chmod(const char * pathname, mode_t mode) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::chmod(const char * pathname, mode_t mode) {
+    NORMAL_OP_WRAPPER(::chmod(pathname, mode));
 }
 
 int FileSystem::chown(const char * pathname, uid_t owner, gid_t group) {
