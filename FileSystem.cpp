@@ -85,7 +85,7 @@ void FileSystem::symlink(const char * target, const char * linkpath) {
 }
 
 void FileSystem::sync() {
-    THROW_NOT_IMPLEMENTED;
+    ::sync();
 }
 
 int FileSystem::truncate(const char * pathname, off_t length) {
