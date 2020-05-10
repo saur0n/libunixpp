@@ -15,8 +15,8 @@ namespace nx {
 namespace FileSystem {
     /** Check user's permissions for a file **/
     bool access(const char * pathname, int mode=F_OK);
-    /**/
-    int chdir(const char * path);
+    /** Change working directory **/
+    void chdir(const char * path);
     /**/
     int chmod(const char * pathname, mode_t mode);
     /**/

@@ -24,8 +24,8 @@ bool FileSystem::access(const char * pathname, int mode) {
         return true;
 }
 
-int FileSystem::chdir(const char * path) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::chdir(const char * path) {
+    NORMAL_OP_WRAPPER(::chdir(path));
 }
 
 int FileSystem::chmod(const char * pathname, mode_t mode) {
