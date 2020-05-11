@@ -64,8 +64,8 @@ ssize_t readlink(const char * pathname, char * buf, size_t bufsiz) {
     THROW_NOT_IMPLEMENTED;
 }
 
-int FileSystem::rename(const char * oldpath, const char * newpath) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::rename(const char * oldpath, const char * newpath) {
+    NORMAL_OP_WRAPPER(::rename(oldpath, newpath))
 }
 
 void FileSystem::rmdir(const char * pathname) {

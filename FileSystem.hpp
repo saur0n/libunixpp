@@ -38,8 +38,8 @@ namespace FileSystem {
     void mkdir(const char * pathname, mode_t mode=0700);
     /**/
     ssize_t readlink(const char * pathname, char * buf, size_t bufsiz);
-    /**/
-    int rename(const char * oldpath, const char * newpath);
+    /** Change the name or location of a file **/
+    void rename(const char * oldpath, const char * newpath);
     /** Delete a directory **/
     void rmdir(const char * pathname);
     /**/
