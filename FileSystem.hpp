@@ -32,8 +32,10 @@ namespace FileSystem {
     void lchown(const char * pathname, uid_t owner, gid_t group);
     /** Make a new name for a file **/
     void link(const char * oldpath, const char * newpath);
-    /**/
-    int lstat(const char * pathname, struct stat * statbuf);
+    /** Get file status, do not follow symlinks **/
+    void lstat(const char * pathname, struct stat * statbuf);
+    /** Get file status, do not follow symlinks **/
+    struct stat lstat(const char * pathname);
     /** Create a directory **/
     void mkdir(const char * pathname, mode_t mode=0700);
     /**/

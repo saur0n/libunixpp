@@ -52,8 +52,14 @@ void FileSystem::link(const char * oldpath, const char * newpath) {
     NORMAL_OP_WRAPPER(::link(oldpath, newpath));
 }
 
-int FileSystem::lstat(const char * pathname, struct stat * statbuf) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::lstat(const char * pathname, struct stat * statbuf) {
+    NORMAL_OP_WRAPPER(::lstat(pathname, statbuf))
+}
+
+struct stat FileSystem::lstat(const char * pathname) {
+    struct stat statbuf;
+    FileSystem::lstat(pathname, &statbuf);
+    return statbuf;
 }
 
 void FileSystem::mkdir(const char * pathname, mode_t mode) {
