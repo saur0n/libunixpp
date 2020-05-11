@@ -42,8 +42,10 @@ namespace FileSystem {
     void rename(const char * oldpath, const char * newpath);
     /** Delete a directory **/
     void rmdir(const char * pathname);
-    /**/
-    int stat(const char * pathname, struct stat * statbuf);
+    /** Get file status **/
+    void stat(const char * pathname, struct stat * statbuf);
+    /** Get file status **/
+    struct stat stat(const char * pathname);
     /** Get filesystem statistics **/
     void statfs(const char * path, FSStatistics * buf);
     /** Get filesystem statistics **/

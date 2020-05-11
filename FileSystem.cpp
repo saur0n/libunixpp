@@ -72,8 +72,14 @@ void FileSystem::rmdir(const char * pathname) {
     NORMAL_OP_WRAPPER(::rmdir(pathname))
 }
 
-int FileSystem::stat(const char * pathname, struct stat * statbuf) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::stat(const char * pathname, struct stat * statbuf) {
+    NORMAL_OP_WRAPPER(::stat(pathname, statbuf))
+}
+
+struct stat FileSystem::stat(const char * pathname) {
+    struct stat statbuf;
+    FileSystem::stat(pathname, &statbuf);
+    return statbuf;
 }
 
 void FileSystem::statfs(const char * path, FSStatistics * buf) {
