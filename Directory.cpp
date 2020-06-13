@@ -20,6 +20,7 @@ Directory::~Directory() {
 }
 
 Directory::Entry * Directory::read() {
+    errno=0;
     auto retval=readdir(dirp);
     THROW_SYSTEM_ERROR_IF((retval==nullptr)&&(errno!=0));
     return retval;
