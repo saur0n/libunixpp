@@ -124,8 +124,18 @@ void FileSystem::setAttribute(const char * pathname, const char * name, const ch
     THROW_SYSTEM_ERROR_STD(setxattr(pathname, name, value, size, flags));
 }
 
+void FileSystem::setAttributeL(const char * pathname, const char * name, const char * value, size_t size, int flags) {
+    THROW_SYSTEM_ERROR_STD(lsetxattr(pathname, name, value, size, flags));
+}
+
 size_t FileSystem::getAttribute(const char * pathname, const char * name, char * value, size_t size) {
     ssize_t retval=getxattr(pathname, name, value, size);
+    THROW_SYSTEM_ERROR_IF(retval<0);
+    return size_t(retval);
+}
+
+size_t FileSystem::getAttributeL(const char * pathname, const char * name, char * value, size_t size) {
+    ssize_t retval=lgetxattr(pathname, name, value, size);
     THROW_SYSTEM_ERROR_IF(retval<0);
     return size_t(retval);
 }
@@ -134,6 +144,14 @@ void FileSystem::listAttributes(const char * pathname, char * list, size_t size)
     THROW_NOT_IMPLEMENTED;
 }
 
+void FileSystem::listAttributesL(const char * pathname, char * list, size_t size) {
+    THROW_NOT_IMPLEMENTED;
+}
+
 void FileSystem::removeAttribute(const char * pathname, const char * name) {
     THROW_SYSTEM_ERROR_STD(removexattr(pathname, name));
+}
+
+void FileSystem::removeAttributeL(const char * pathname, const char * name) {
+    THROW_SYSTEM_ERROR_STD(lremovexattr(pathname, name));
 }
