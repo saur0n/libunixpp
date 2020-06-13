@@ -125,7 +125,9 @@ void FileSystem::setAttribute(const char * pathname, const char * name, const ch
 }
 
 size_t FileSystem::getAttribute(const char * pathname, const char * name, char * value, size_t size) {
-    THROW_NOT_IMPLEMENTED;
+    ssize_t retval=getxattr(pathname, name, value, size);
+    THROW_SYSTEM_ERROR_IF(retval<0);
+    return size_t(retval);
 }
 
 void FileSystem::listAttributes(const char * pathname, char * list, size_t size) {
