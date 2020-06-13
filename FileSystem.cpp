@@ -140,12 +140,16 @@ size_t FileSystem::getAttributeL(const char * pathname, const char * name, char 
     return size_t(retval);
 }
 
-void FileSystem::listAttributes(const char * pathname, char * list, size_t size) {
-    THROW_NOT_IMPLEMENTED;
+size_t FileSystem::listAttributes(const char * pathname, char * list, size_t size) {
+    ssize_t retval=listxattr(pathname, list, size);
+    THROW_SYSTEM_ERROR_IF(retval<0);
+    return size_t(retval);
 }
 
-void FileSystem::listAttributesL(const char * pathname, char * list, size_t size) {
-    THROW_NOT_IMPLEMENTED;
+size_t FileSystem::listAttributesL(const char * pathname, char * list, size_t size) {
+    ssize_t retval=llistxattr(pathname, list, size);
+    THROW_SYSTEM_ERROR_IF(retval<0);
+    return size_t(retval);
 }
 
 void FileSystem::removeAttribute(const char * pathname, const char * name) {

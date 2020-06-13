@@ -71,9 +71,9 @@ namespace FileSystem {
     /** Retrieve an extended attribute value, do not follow symbolic links **/
     size_t getAttributeL(const char * pathname, const char * name, char * value, size_t size);
     /** List extended attribute names **/
-    void listAttributes(const char * pathname, char * list, size_t size);
+    size_t listAttributes(const char * pathname, char * list, size_t size);
     /** List extended attribute names, do not follow symbolic links **/
-    void listAttributesL(const char * pathname, char * list, size_t size);
+    size_t listAttributesL(const char * pathname, char * list, size_t size);
     /** Remove an extended attribute **/
     void removeAttribute(const char * pathname, const char * name);
     /** Remove an extended attribute, do not follow symbolic links **/
