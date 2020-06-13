@@ -7,6 +7,7 @@
 
 #include <linux/limits.h>
 #include <sys/time.h>
+#include <sys/xattr.h>
 #include "exception.hppi"
 #include "FileSystem.hpp"
 
@@ -120,7 +121,7 @@ void FileSystem::utimes(const char * filename, const struct timeval times[2]) {
 }
 
 void FileSystem::setAttribute(const char * pathname, const char * name, const char * value, size_t size, int flags) {
-    THROW_NOT_IMPLEMENTED;
+    THROW_SYSTEM_ERROR_STD(setxattr(pathname, name, value, size, flags));
 }
 
 size_t FileSystem::getAttribute(const char * pathname, const char * name, char * value, size_t size) {

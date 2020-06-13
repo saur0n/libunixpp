@@ -64,12 +64,20 @@ namespace FileSystem {
     void utimes(const char * filename, const struct timeval times[2]);
     /** Set an extended attribute value **/
     void setAttribute(const char * pathname, const char * name, const char * value, size_t size, int flags=0);
+    /** Set an extended attribute value, do not follow symbolic links **/
+    void setAttributeL(const char * pathname, const char * name, const char * value, size_t size, int flags=0);
     /** Retrieve an extended attribute value **/
     size_t getAttribute(const char * pathname, const char * name, char * value, size_t size);
+    /** Retrieve an extended attribute value, do not follow symbolic links **/
+    size_t getAttributeL(const char * pathname, const char * name, char * value, size_t size);
     /** List extended attribute names **/
     void listAttributes(const char * pathname, char * list, size_t size);
+    /** List extended attribute names, do not follow symbolic links **/
+    void listAttributesL(const char * pathname, char * list, size_t size);
     /** Remove an extended attribute **/
     void removeAttribute(const char * pathname, const char * name);
+    /** Remove an extended attribute, do not follow symbolic links **/
+    void removeAttributeL(const char * pathname, const char * name);
 }
 
 }
