@@ -135,5 +135,5 @@ void FileSystem::listAttributes(const char * pathname, char * list, size_t size)
 }
 
 void FileSystem::removeAttribute(const char * pathname, const char * name) {
-    THROW_NOT_IMPLEMENTED;
+    THROW_SYSTEM_ERROR_STD(removexattr(pathname, name));
 }
