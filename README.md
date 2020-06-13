@@ -1,6 +1,6 @@
 # libunix++
 
-`libunix++` is a convinient C++ wrapper around Linux/POSIX system calls.
+`libunix++` is a convenient C++ wrapper around Linux/POSIX system calls. The library can be used for desktop, server and mobile development.
 
 ## Dependencies
 
