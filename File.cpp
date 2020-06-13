@@ -85,9 +85,11 @@ void File::rename(const char * oldpath, const char * newpath) {
     THROW_SYSTEM_ERROR_STD(renameat(fd, oldpath, fd, newpath));
 }
 
+#ifndef PLATFORM_MUSL
 void File::rename(const char * oldpath, const char * newpath, int flags) {
     THROW_SYSTEM_ERROR_STD(renameat2(getDescriptor(), oldpath, getDescriptor(), newpath, flags));
 }
+#endif
 
 bool File::access(const char * pathname, int mode, int flags) {
     return F_OK==faccessat(getDescriptor(), pathname, mode, flags);
@@ -155,6 +157,12 @@ void File::exec(const char * pathname, char ** const argv, char ** const envp, i
     
 }
 
+#ifndef PLATFORM_MUSL
 void File::stat(const char * pathname, unsigned int mask, struct statx * statxbuf, int flags) {
     THROW_SYSTEM_ERROR_STD(statx(getDescriptor(), pathname, flags, mask, statxbuf));
+}
+#endif
+
+mode_t File::umask(mode_t mask) {
+    return ::umask(mask);
 }

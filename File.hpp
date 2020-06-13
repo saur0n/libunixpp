@@ -15,6 +15,7 @@
 namespace nx {
 
 class File : public Stream {
+    friend class Directory;
 public:
     /** **/
     const int REMOVEDIR=AT_REMOVEDIR;
@@ -37,7 +38,7 @@ public:
     /** Get filesystem statistics **/
     void statfs(struct statfs * buf);
     /** Truncate a file to a specified length **/
-    void truncate(off_t length);
+    void truncate(off_t length=0);
     /** Manipulate file space **/
     void allocate(int mode, off_t offset, off_t len);
     /** Change working directory to this directory **/
@@ -56,10 +57,12 @@ public:
     void link(const char * oldpath, const char * newpath, int flags=0);
     /** Change the name/location of a file relative to this directory **/
     void rename(const char * oldpath, const char * newpath);
+#ifndef PLATFORM_MUSL
     /** Change the name/location of a file relative to this directory **/
     void rename(const char * oldpath, const char * newpath, int flags);
+#endif
     /** Check user's permissions for a file relative to this directory **/
-    bool access(const char *pathname, int mode, int flags=0);
+    bool access(const char * pathname, int mode, int flags=0);
     /** Change permissions of a file **/
     void chmod(mode_t mode);
     /** Change permissions of a file relative to this directory **/
@@ -90,8 +93,12 @@ public:
     void utime(const char * pathname, const struct timespec times[2], int flags=0);
     /** **/
     void exec(const char * pathname, char ** const argv, char ** const envp, int flags=0);
-    /** Get file status (extended) **/
+#ifndef PLATFORM_MUSL
+    /** Get file status (extended) relative to this directory **/
     void stat(const char * pathname, unsigned int mask, struct statx * statxbuf, int flags=0);
+#endif
+    /** Set file mode creation mask **/
+    static mode_t umask(mode_t mask);
 };
 
 }
