@@ -6,6 +6,7 @@
  ******************************************************************************/
 
 #include <linux/limits.h>
+#include <sys/time.h>
 #include "exception.hppi"
 #include "FileSystem.hpp"
 
@@ -114,8 +115,8 @@ void FileSystem::unlink(const char * pathname) {
     NORMAL_OP_WRAPPER(::unlink(pathname))
 }
 
-int FileSystem::utimes(const char * filename, const struct timeval times[2]) {
-    THROW_NOT_IMPLEMENTED;
+void FileSystem::utimes(const char * filename, const struct timeval times[2]) {
+    NORMAL_OP_WRAPPER(::utimes(filename, times));
 }
 
 void FileSystem::setAttribute(const char * pathname, const char * name, const char * value, size_t size, int flags) {

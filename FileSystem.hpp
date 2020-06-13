@@ -57,11 +57,11 @@ namespace FileSystem {
     /**/
     void sync();
     /** Truncate a file to a specified length **/
-    void truncate(const char * pathname, off_t length);
+    void truncate(const char * pathname, off_t length=0);
     /** Delete a name and possibly the file it refers to **/
     void unlink(const char * pathname);
-    /**/
-    int utimes(const char * filename, const struct timeval times[2]);
+    /** Change file last access and modification times **/
+    void utimes(const char * filename, const struct timeval times[2]);
     /** Set an extended attribute value **/
     void setAttribute(const char * pathname, const char * name, const char * value, size_t size, int flags=0);
     /** Retrieve an extended attribute value **/
