@@ -8,12 +8,15 @@
 CXXFLAGS=-Wall -Wextra -Os
 LIBRARIES=-lstdc++ -lunix++
 
-all: ls sdelete
+all: ls resolve sdelete
 
 clean:
-	rm -f ls sdelete
+	rm -f ls resolve sdelete
 
 ls: ls.cpp
+	gcc $(CXXFLAGS) -o $@ $(LIBRARIES) $<
+
+resolve: resolve.cpp
 	gcc $(CXXFLAGS) -o $@ $(LIBRARIES) $<
 
 sdelete: sdelete.cpp

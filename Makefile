@@ -11,11 +11,12 @@ CXXFLAGS=-fPIC -std=gnu++11 -Os -Wall -Wextra -Wno-unused-parameter -g
 SOURCES=*.cpp
 HEADERS=*.hpp
 OUTPUT=lib$(NAME).so
+PLATFORM?=STD
 
 all: $(OUTPUT)
 
 $(OUTPUT): $(SOURCES) $(HEADERS)
-	$(CC) -shared $(CXXFLAGS) -o $(OUTPUT) $(SOURCES)
+	$(CC) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES)
 
 clean:
 	rm -f *.o *.so
@@ -23,7 +24,7 @@ clean:
 release: all
 	strip $(OUTPUT)
 
-install:
+install: all
 	mv $(OUTPUT) /usr/lib64
 	mkdir -p /usr/include/$(NAME)
 	cp $(HEADERS) /usr/include/$(NAME)

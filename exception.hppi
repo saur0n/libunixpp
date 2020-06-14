@@ -18,6 +18,47 @@
         THROW_SYSTEM_ERROR
 #define THROW_SYSTEM_ERROR_STD(retval) \
     THROW_SYSTEM_ERROR_IF(retval<0)
+#define NORMAL_OP_WRAPPER(expression) \
+    THROW_SYSTEM_ERROR_IF((expression)<0);
+#define NORMAL_POP_WRAPPER(expression) \
+    THROW_SYSTEM_ERROR_IF((expression)==nullptr);
+#define NORMAL_FN_WRAPPER(expression) \
+    int retval=(expression); \
+    THROW_SYSTEM_ERROR_IF(retval<0); \
+    return retval;
+#define NORMAL_PFN_WRAPPER(expression) \
+    auto retval=(expression); \
+    THROW_SYSTEM_ERROR_IF(retval==nullptr); \
+    return retval;
+#define INTERRUPTED_OP_WRAPPER(expression) \
+    int result; \
+    do { \
+        result=(expression); \
+    } while ((result<0)&&(errno==EINTR)&&!interrupted); \
+    if (result<0) { \
+        if (errno==EINTR) \
+            throw InterruptedException(); \
+        else \
+            THROW_SYSTEM_ERROR; \
+    }
+// deprecated
+#define NORMAL_STROP_WRAPPER(expression) \
+    THROW_SYSTEM_ERROR_IF((expression)!=nullptr);
+#define NORMAL_IO_WRAPPER(syscallReturnType, returnType, expression) \
+    syscallReturnType result=(expression); \
+    THROW_SYSTEM_ERROR_IF(result<0); \
+    return returnType(result);
+#define INTERRUPTED_IO_WRAPPER(syscallReturnType, returnType, expression) \
+    syscallReturnType result; \
+    do { \
+        result=(expression); \
+    } while ((result<0)&&(errno==EINTR)&&!interrupted); \
+    if (result>=0) \
+        return returnType(result); \
+    else if (errno==EINTR) \
+        throw InterruptedException(); \
+    else \
+        THROW_SYSTEM_ERROR;
 #define THROW_NOT_IMPLEMENTED \
     throw std::logic_error("not implemented yet")
 

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  libunix++: C++ wrapper for Linux system calls
- *  ...
+ *  Generic stream operations
  *  
  *  © 2019—2020, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
@@ -16,6 +16,9 @@ namespace nx {
 /** Base class for all readable-writeable objects **/
 class StreamBase {}; // TODO
 
+/**/
+class InterruptedException {};
+
 /** Base class for all descriptor-based objects **/
 class Stream {
 public:
@@ -29,6 +32,8 @@ public:
     virtual ~Stream();
     /** Reposition read//write file offset **/
     off_t seek(off_t offset, int whence=SEEK_SET);
+    /** Returns current read/write file offset **/
+    off_t tell() { return seek(0, SEEK_CUR); }
     /** Read from the stream **/
     virtual size_t read(void * buffer, size_t count);
     /** Read from the stream at a given offset **/
@@ -67,6 +72,7 @@ protected:
     unsigned fcntl(int cmd, int arg);
     
 private:
+    Stream &operator =(Stream &other)=delete;
     int fd;
 };
 
