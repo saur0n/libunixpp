@@ -26,6 +26,8 @@ namespace FileSystem {
     void chmod(const char * pathname, mode_t mode);
     /** Change ownership of a file **/
     void chown(const char * pathname, uid_t owner, gid_t group);
+    /** Change root directory **/
+    void chroot(const char * path);
     /** Get current working directory **/
     std::string getcwd();
     /** Change ownership of a file, do not follow symlinks **/

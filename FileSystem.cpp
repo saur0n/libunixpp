@@ -40,6 +40,10 @@ void FileSystem::chown(const char * pathname, uid_t owner, gid_t group) {
     NORMAL_OP_WRAPPER(::chown(pathname, owner, group));
 }
 
+void FileSystem::chroot(const char * path) {
+    NORMAL_OP_WRAPPER(::chroot(path));
+}
+
 string FileSystem::getcwd() {
     char buffer[PATH_MAX];
     NORMAL_POP_WRAPPER(::getcwd(buffer, sizeof(buffer)));
