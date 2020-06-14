@@ -68,7 +68,11 @@ void FileSystem::mkdir(const char * pathname, mode_t mode) {
     NORMAL_OP_WRAPPER(::mkdir(pathname, mode))
 }
 
-ssize_t readlink(const char * pathname, char * buf, size_t bufsiz) {
+void FileSystem::mknod(const char * pathname, mode_t mode, dev_t dev) {
+    NORMAL_OP_WRAPPER(::mknod(pathname, mode, dev));
+}
+
+ssize_t FileSystem::readlink(const char * pathname, char * buf, size_t bufsiz) {
     THROW_NOT_IMPLEMENTED;
 }
 

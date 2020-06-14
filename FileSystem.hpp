@@ -38,6 +38,8 @@ namespace FileSystem {
     struct stat lstat(const char * pathname);
     /** Create a directory **/
     void mkdir(const char * pathname, mode_t mode=0700);
+    /** Create a special or ordinary file **/
+    void mknod(const char * pathname, mode_t mode, dev_t dev);
     /**/
     ssize_t readlink(const char * pathname, char * buf, size_t bufsiz);
     /** Change the name or location of a file **/
