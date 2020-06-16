@@ -15,6 +15,8 @@ class MemoryRegion {
 public:
     /** Create a memory region with defined start address and length **/
     MemoryRegion(void * address, size_t length);
+    /** Determine whether pages are resident in memory **/
+    void incore(unsigned char * result);
     /** Set protection on a region of memory **/
     void protect(int prot);
     /** Returns the initial address **/

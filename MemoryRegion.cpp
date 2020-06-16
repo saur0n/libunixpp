@@ -14,6 +14,10 @@ using namespace nx;
 MemoryRegion::MemoryRegion(void * address, size_t length) :
         address(address), length(length) {}
 
+void MemoryRegion::incore(unsigned char * result) {
+    NORMAL_OP_WRAPPER(mincore(address, length, result));
+}
+
 void MemoryRegion::protect(int prot) {
     NORMAL_OP_WRAPPER(mprotect(address, length, prot));
 }
