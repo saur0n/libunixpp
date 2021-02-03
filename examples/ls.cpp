@@ -2,13 +2,13 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Example: list files in a directory
  *  
- *  © 2020, Sauron <libunixpp@saur0n.science>
+ *  © 2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <iostream>
 #include <unix++/Directory.hpp>
 
-using namespace nx;
+using namespace upp;
 using std::cerr;
 using std::cout;
 using std::endl;

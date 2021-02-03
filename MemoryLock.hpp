@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Memory locking operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_MEMORYLOCK_HPP
@@ -11,7 +11,7 @@
 #include "MemoryRegion.hpp"
 #include <sys/mman.h>
 
-namespace nx {
+namespace upp {
 
 /**/
 class MemoryLock : public MemoryRegion {

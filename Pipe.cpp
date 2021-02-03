@@ -2,14 +2,14 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Pipe operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <fcntl.h>
 #include "exception.hppi"
 #include "Pipe.hpp"
 
-using namespace nx;
+using namespace upp;
 using std::pair;
 
 pair<Pipe, Pipe> Pipe::create() {

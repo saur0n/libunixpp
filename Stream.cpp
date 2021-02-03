@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <fcntl.h>
@@ -12,7 +12,11 @@
 #include "exception.hppi"
 #include "Stream.hpp"
 
-using namespace nx;
+using namespace upp;
+
+Stream::Stream(Stream &&other) : fd(other.fd) {
+    other.fd=-1;
+}
 
 Stream::Stream(const Stream &other) : fd(dup(other.fd)) {
     THROW_SYSTEM_ERROR_IF(fd<0);

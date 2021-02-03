@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Example: secure file deleter
  *  
- *  © 2020, Sauron <libunixpp@saur0n.science>
+ *  © 2020—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <algorithm>
@@ -10,7 +10,7 @@
 #include <locale.h>
 #include <unix++/File.hpp>
 
-using nx::File;
+using upp::File;
 using std::cerr;
 using std::endl;
 

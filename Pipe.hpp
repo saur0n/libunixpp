@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Pipe operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_PIPE_HPP
@@ -11,7 +11,7 @@
 #include <utility>
 #include "Stream.hpp"
 
-namespace nx {
+namespace upp {
 
 /**/
 class Pipe : public Stream {

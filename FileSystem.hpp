@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Static filesystem operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_FILESYSTEM_HPP
@@ -13,7 +13,7 @@
 #include <sys/vfs.h>
 #include <unistd.h>
 
-namespace nx {
+namespace upp {
 
 namespace FileSystem {
     /** Filesystem statistics **/

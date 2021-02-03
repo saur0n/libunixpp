@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  File operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <sys/stat.h>
@@ -11,7 +11,7 @@
 #include "exception.hppi"
 #include "File.hpp"
 
-using namespace nx;
+using namespace upp;
 
 File::File(const char * filename) : Stream(open(filename, O_RDONLY)) {}
 

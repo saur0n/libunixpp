@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_STREAM_HPP
@@ -11,7 +11,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace nx {
+namespace upp {
 
 /** Base class for all readable-writeable objects **/
 class StreamBase {}; // TODO
@@ -22,6 +22,8 @@ class InterruptedException {};
 /** Base class for all descriptor-based objects **/
 class Stream {
 public:
+    /**/
+    Stream(Stream &&other);
     /** Duplicate a file descriptor **/
     Stream(const Stream &other);
     /** Duplicate a file descriptor on the specified one **/

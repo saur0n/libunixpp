@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Directory operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_DIRECTORY_HPP
@@ -11,7 +11,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-namespace nx {
+namespace upp {
 
 class File;
 

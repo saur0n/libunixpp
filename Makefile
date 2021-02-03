@@ -2,7 +2,7 @@
 #   libunix++: C++ wrapper for Linux system calls
 #   Build rules
 #   
-#   © 2019—2020, Sauron
+#   © 2019—2021, Sauron
 ################################################################################
 
 NAME=unix++
@@ -13,10 +13,13 @@ HEADERS=*.hpp
 OUTPUT=lib$(NAME).so
 PLATFORM?=STD
 
-all: $(OUTPUT)
+all: $(OUTPUT) unittest
 
 $(OUTPUT): $(SOURCES) $(HEADERS)
-	$(CC) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES)
+	$(CC) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES) -lrt
+
+unittest: tests/main.cpp *.hpp *.cpp 
+	$(CC) $(CXXFLAGS) -pthread -DPLATFORM_$(PLATFORM) -o $@ *.cpp tests/main.cpp -lrt
 
 clean:
 	rm -f *.o *.so

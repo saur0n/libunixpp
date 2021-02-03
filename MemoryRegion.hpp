@@ -2,13 +2,13 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Memory operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_MEMORYREGION_HPP
 #define __UNIXPP_MEMORYREGION_HPP
 
-namespace nx {
+namespace upp {
 
 /** A contiguous region of memory **/
 class MemoryRegion {

@@ -2,13 +2,13 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Memory locking operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include "exception.hppi"
 #include "MemoryLock.hpp"
 
-using namespace nx;
+using namespace upp;
 
 MemoryLock::MemoryLock(void * addr, size_t length) : MemoryRegion(addr, length) {
     NORMAL_OP_WRAPPER(mlock(addr, length));

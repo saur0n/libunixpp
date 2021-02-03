@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  File operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_FILE_HPP
@@ -12,7 +12,7 @@
 #include <sys/file.h>
 #include "Stream.hpp"
 
-namespace nx {
+namespace upp {
 
 class File : public Stream {
     friend class Directory;

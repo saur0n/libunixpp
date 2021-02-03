@@ -2,14 +2,14 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Memory operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <sys/mman.h>
 #include "exception.hppi"
 #include "MemoryRegion.hpp"
 
-using namespace nx;
+using namespace upp;
 
 MemoryRegion::MemoryRegion(void * address, size_t length) :
         address(address), length(length) {}

@@ -2,14 +2,14 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Directory operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include "Directory.hpp"
 #include "File.hpp"
 #include "exception.hppi"
 
-using namespace nx;
+using namespace upp;
 
 Directory::Directory(const char * directory) : Directory(opendir(directory)) {}
 

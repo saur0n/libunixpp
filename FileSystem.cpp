@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Static filesystem operations
  *  
- *  © 2019—2020, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2021, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <linux/limits.h>
@@ -11,7 +11,7 @@
 #include "exception.hppi"
 #include "FileSystem.hpp"
 
-using namespace nx;
+using namespace upp;
 using std::string;
 
 bool FileSystem::access(const char * pathname, int mode) {
