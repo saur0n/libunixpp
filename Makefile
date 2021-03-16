@@ -8,18 +8,16 @@
 NAME=unix++
 CC=g++
 CXXFLAGS=-fPIC -std=gnu++11 -Os -Wall -Wextra -Wno-unused-parameter -g
+LIBRARIES=-lrt -lstdc++
 SOURCES=*.cpp
 HEADERS=*.hpp
 OUTPUT=lib$(NAME).so
 PLATFORM?=STD
 
-all: $(OUTPUT) unittest
+all: $(OUTPUT)
 
 $(OUTPUT): $(SOURCES) $(HEADERS)
-	$(CC) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES) -lrt
-
-unittest: tests/main.cpp *.hpp *.cpp 
-	$(CC) $(CXXFLAGS) -pthread -DPLATFORM_$(PLATFORM) -o $@ *.cpp tests/main.cpp -lrt
+	$(CC) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES) $(LIBRARIES)
 
 clean:
 	rm -f *.o *.so

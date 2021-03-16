@@ -21,6 +21,7 @@ class InterruptedException {};
 
 /** Base class for all descriptor-based objects **/
 class Stream {
+    friend class Poll;
 public:
     /**/
     Stream(Stream &&other);
