@@ -45,6 +45,8 @@ public:
     void chdir();
     /** Apply or remove an advisory lock on an open file **/
     void lock(int operation);
+    /** Apply, test or remove a POSIX lock on an open file **/
+    void lock(int cmd, off_t len);
     /** Create a special file relative to this directory **/
     void mknod(const char * pathname, mode_t mode, dev_t device);
     /** Make directory relative to this directory **/

@@ -59,6 +59,10 @@ void File::lock(int operation) {
     THROW_SYSTEM_ERROR_STD(flock(getDescriptor(), operation));
 }
 
+void File::lock(int cmd, off_t len) {
+    THROW_SYSTEM_ERROR_STD(lockf(getDescriptor(), cmd, len));
+}
+
 void File::mknod(const char * pathname, mode_t mode, dev_t device) {
     THROW_SYSTEM_ERROR_STD(mknodat(getDescriptor(), pathname, mode, device));
 }
