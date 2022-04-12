@@ -40,8 +40,18 @@ public:
     void add(const Stream &stream, short events);
     /**/
     unsigned poll(int timeout);
+    /**/
+    unsigned poll(bool &interrupted, int timeout);
     /** Returns returned events for the specified stream **/
     short revents(size_t index) const { return pollfds[index].revents; }
+    /** Poll just one file descriptor **/
+    static short poll(Stream &stream, short events, int timeout);
+    /** Poll just one file descriptor **/
+    static short poll(bool &interrupted, Stream &stream, short events, int timeout);
+    /** Poll just one file descriptor, waiting for a signal safely **/
+    static short poll(Stream &stream, short events, const timespec * tmo_p, const sigset_t * sigmask);
+    /** Poll just one file descriptor, waiting for a signal safely **/
+    static short poll(bool &interrupted, Stream &stream, short events, const timespec * tmo_p, const sigset_t * sigmask);
     
 private:
     std::vector<struct pollfd> pollfds;

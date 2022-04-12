@@ -33,7 +33,7 @@ public:
     Stream(const Stream &other, int newfd, int flags);
     /** Close **/
     virtual ~Stream();
-    /** Reposition read//write file offset **/
+    /** Reposition read/write file offset **/
     off_t seek(off_t offset, int whence=SEEK_SET);
     /** Returns current read/write file offset **/
     off_t tell() { return seek(0, SEEK_CUR); }
