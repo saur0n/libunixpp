@@ -2,11 +2,15 @@
 #   libunix++: C++ wrapper for Linux system calls
 #   Build rules
 #   
-#   © 2019—2021, Sauron
+#   © 2019—2022, Sauron
 ################################################################################
 
 NAME=unix++
-CC=g++
+ifdef TOOLCHAIN
+	CC=$(TOOLCHAIN)-g++
+else
+	CC=g++
+endif
 CXXFLAGS=-fPIC -std=gnu++11 -Os -Wall -Wextra -Wno-unused-parameter -g
 LIBRARIES=-lrt -lstdc++
 SOURCES=*.cpp

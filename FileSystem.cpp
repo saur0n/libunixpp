@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Static filesystem operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2022, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <linux/limits.h>
@@ -98,13 +98,13 @@ struct stat FileSystem::stat(const char * pathname) {
     return statbuf;
 }
 
-void FileSystem::statfs(const char * path, FSStatistics * buf) {
-    NORMAL_OP_WRAPPER(::statfs(path, buf));
+void FileSystem::statfs(const char * path, Statistics &buf) {
+    NORMAL_OP_WRAPPER(::statfs(path, &buf));
 }
 
-FileSystem::FSStatistics FileSystem::statfs(const char * path) {
+FileSystem::Statistics FileSystem::statfs(const char * path) {
     struct statfs result;
-    FileSystem::statfs(path, &result);
+    FileSystem::statfs(path, result);
     return result;
 }
 

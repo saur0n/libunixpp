@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Static filesystem operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2022, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_FILESYSTEM_HPP
@@ -17,7 +17,7 @@ namespace upp {
 
 namespace FileSystem {
     /** Filesystem statistics **/
-    typedef struct ::statfs FSStatistics;
+    typedef struct ::statfs Statistics;
     /** Check user's permissions for a file **/
     bool access(const char * pathname, int mode=F_OK);
     /** Change working directory **/
@@ -53,9 +53,9 @@ namespace FileSystem {
     /** Get file status **/
     struct stat stat(const char * pathname);
     /** Get filesystem statistics **/
-    void statfs(const char * path, FSStatistics * buf);
+    void statfs(const char * path, Statistics &buf);
     /** Get filesystem statistics **/
-    FSStatistics statfs(const char * path);
+    Statistics statfs(const char * path);
     /** Make a new name for a file **/
     void symlink(const char * target, const char * linkpath);
     /**/
