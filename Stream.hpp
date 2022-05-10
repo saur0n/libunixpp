@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2022, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_STREAM_HPP
@@ -12,9 +12,6 @@
 #include <unistd.h>
 
 namespace upp {
-
-/** Base class for all readable-writeable objects **/
-class StreamBase {}; // TODO
 
 /**/
 class InterruptedException {};
@@ -61,12 +58,12 @@ public:
     size_t sendfile(Stream &from, size_t count);
     /** Write a file into the file descriptor **/
     size_t sendfile(Stream &from, off_t &offset, size_t count);
+    /** Returns file descriptor **/
+    int getDescriptor() const { return fd; }
     
 protected:
     /** Initialize by file descriptor **/
     Stream(int fd);
-    /** Returns file descriptor **/
-    int getDescriptor() const { return fd; }
     /** Perform an operation on file descriptor **/
     unsigned ioctl(int request, void * argp);
     /** Manipulate file descriptor **/
