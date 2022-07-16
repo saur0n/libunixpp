@@ -44,6 +44,14 @@ unsigned Poll::poll(bool &interrupted, int timeout) {
     return _poll(interrupted, pollfds.data(), pollfds.size(), timeout);
 }
 
+unsigned Poll::poll(const timespec * tmo_p, const sigset_t * sigmask) {
+    return _poll(pollfds.data(), pollfds.size(), tmo_p, sigmask);
+}
+
+unsigned Poll::poll(bool &interrupted, const timespec * tmo_p, const sigset_t * sigmask) {
+    return _poll(interrupted, pollfds.data(), pollfds.size(), tmo_p, sigmask);
+}
+
 short Poll::poll(Stream &stream, short events, int timeout) {
     struct pollfd pollfd={stream.fd, events, 0};
     _poll(&pollfd, 1, timeout);
