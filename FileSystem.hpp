@@ -42,7 +42,7 @@ namespace FileSystem {
     void mkdir(const char * pathname, mode_t mode=0700);
     /** Create a special or ordinary file **/
     void mknod(const char * pathname, mode_t mode, dev_t dev);
-    /**/
+    /** Read value of a symbolic link **/
     ssize_t readlink(const char * pathname, char * buf, size_t bufsiz);
     /** Change the name or location of a file **/
     void rename(const char * oldpath, const char * newpath);
@@ -58,7 +58,7 @@ namespace FileSystem {
     Statistics statfs(const char * path);
     /** Make a new name for a file **/
     void symlink(const char * target, const char * linkpath);
-    /**/
+    /** Synchronize cached writes to persistent storage **/
     void sync();
     /** Truncate a file to a specified length **/
     void truncate(const char * pathname, off_t length=0);
