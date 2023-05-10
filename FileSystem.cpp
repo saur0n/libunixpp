@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Static filesystem operations
  *  
- *  © 2019—2022, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <linux/limits.h>
@@ -58,12 +58,12 @@ void FileSystem::link(const char * oldpath, const char * newpath) {
     NORMAL_OP_WRAPPER(::link(oldpath, newpath));
 }
 
-void FileSystem::lstat(const char * pathname, struct stat * statbuf) {
+void FileSystem::lstat(const char * pathname, Stat * statbuf) {
     NORMAL_OP_WRAPPER(::lstat(pathname, statbuf))
 }
 
-struct stat FileSystem::lstat(const char * pathname) {
-    struct stat statbuf;
+FileSystem::Stat FileSystem::lstat(const char * pathname) {
+    Stat statbuf;
     FileSystem::lstat(pathname, &statbuf);
     return statbuf;
 }
@@ -88,22 +88,22 @@ void FileSystem::rmdir(const char * pathname) {
     NORMAL_OP_WRAPPER(::rmdir(pathname))
 }
 
-void FileSystem::stat(const char * pathname, struct stat * statbuf) {
+void FileSystem::stat(const char * pathname, Stat * statbuf) {
     NORMAL_OP_WRAPPER(::stat(pathname, statbuf))
 }
 
-struct stat FileSystem::stat(const char * pathname) {
-    struct stat statbuf;
+FileSystem::Stat FileSystem::stat(const char * pathname) {
+    Stat statbuf;
     FileSystem::stat(pathname, &statbuf);
     return statbuf;
 }
 
-void FileSystem::statfs(const char * path, Statistics &buf) {
+void FileSystem::statfs(const char * path, StatFS &buf) {
     NORMAL_OP_WRAPPER(::statfs(path, &buf));
 }
 
-FileSystem::Statistics FileSystem::statfs(const char * path) {
-    struct statfs result;
+FileSystem::StatFS FileSystem::statfs(const char * path) {
+    StatFS result;
     FileSystem::statfs(path, result);
     return result;
 }

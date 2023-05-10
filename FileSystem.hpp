@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Static filesystem operations
  *  
- *  © 2019—2022, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_FILESYSTEM_HPP
@@ -16,8 +16,10 @@
 namespace upp {
 
 namespace FileSystem {
+    /** File statistics **/
+    using Stat=struct ::stat;
     /** Filesystem statistics **/
-    typedef struct ::statfs Statistics;
+    using StatFS=struct ::statfs;
     /** Check user's permissions for a file **/
     bool access(const char * pathname, int mode=F_OK);
     /** Change working directory **/
@@ -35,9 +37,9 @@ namespace FileSystem {
     /** Make a new name for a file **/
     void link(const char * oldpath, const char * newpath);
     /** Get file status, do not follow symlinks **/
-    void lstat(const char * pathname, struct stat * statbuf);
+    void lstat(const char * pathname, Stat * statbuf);
     /** Get file status, do not follow symlinks **/
-    struct stat lstat(const char * pathname);
+    Stat lstat(const char * pathname);
     /** Create a directory **/
     void mkdir(const char * pathname, mode_t mode=0700);
     /** Create a special or ordinary file **/
@@ -49,13 +51,13 @@ namespace FileSystem {
     /** Delete a directory **/
     void rmdir(const char * pathname);
     /** Get file status **/
-    void stat(const char * pathname, struct stat * statbuf);
+    void stat(const char * pathname, Stat * statbuf);
     /** Get file status **/
-    struct stat stat(const char * pathname);
+    Stat stat(const char * pathname);
     /** Get filesystem statistics **/
-    void statfs(const char * path, Statistics &buf);
+    void statfs(const char * path, StatFS &buf);
     /** Get filesystem statistics **/
-    Statistics statfs(const char * path);
+    StatFS statfs(const char * path);
     /** Make a new name for a file **/
     void symlink(const char * target, const char * linkpath);
     /** Synchronize cached writes to persistent storage **/
