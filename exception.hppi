@@ -43,7 +43,7 @@
     }
 // deprecated
 #define NORMAL_STROP_WRAPPER(expression) \
-    THROW_SYSTEM_ERROR_IF((expression)!=nullptr);
+    THROW_SYSTEM_ERROR_IF((expression)==nullptr);
 #define NORMAL_IO_WRAPPER(syscallReturnType, returnType, expression) \
     syscallReturnType result=(expression); \
     THROW_SYSTEM_ERROR_IF(result<0); \
