@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2022, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_STREAM_HPP
@@ -20,6 +20,8 @@ class InterruptedException {};
 class Stream {
     friend class Poll;
 public:
+    /** Standard I/O streams **/
+    enum Standard { IN, OUT, ERR };
     /**/
     Stream(Stream &&other);
     /** Duplicate a file descriptor **/
@@ -60,6 +62,8 @@ public:
     size_t sendfile(Stream &from, off_t &offset, size_t count);
     /** Returns file descriptor **/
     int getDescriptor() const { return fd; }
+    /** Returns the standard stream **/
+    static Stream &get(Standard no);
     
 protected:
     /** Initialize by file descriptor **/

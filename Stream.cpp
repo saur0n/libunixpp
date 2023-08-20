@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <fcntl.h>
@@ -13,6 +13,15 @@
 #include "Stream.hpp"
 
 using namespace upp;
+
+class StdStream : public Stream {
+public:
+    StdStream(Stream::Standard no) : Stream(int(no)) {}
+};
+
+static StdStream sin(Stream::IN), sout(Stream::OUT), serr(Stream::ERR);
+
+/******************************************************************************/
 
 Stream::Stream(Stream &&other) : fd(other.fd) {
     other.fd=-1;
@@ -97,6 +106,17 @@ size_t Stream::sendfile(Stream &from, off_t &offset, size_t count) {
     ssize_t result=::sendfile(fd, from.fd, &offset, count);
     THROW_SYSTEM_ERROR_IF(result<0);
     return size_t(result);
+}
+
+Stream &Stream::get(Standard no) {
+    if (no==IN)
+        return sin;
+    else if (no==OUT)
+        return sout;
+    else if (no==ERR)
+        return serr;
+    else
+        throw std::out_of_range("no");
 }
 
 Stream::Stream(int fd) : fd(fd) {
