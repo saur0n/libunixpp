@@ -2,16 +2,15 @@
 #   libunix++: C++ wrapper for Linux system calls
 #   Build rules
 #   
-#   © 2019—2022, Sauron
+#   © 2019—2023, Sauron
 ################################################################################
 
 NAME=unix++
-ifdef TOOLCHAIN
-	CC=$(TOOLCHAIN)-g++
-else
-	CC=g++
-endif
-CXXFLAGS=-fPIC -std=gnu++11 -Os -Wall -Wextra -Wno-unused-parameter -g
+CC=$(if $(TOOLCHAIN), /usr/bin/$(TOOLCHAIN)-)gcc
+CXX=$(if $(TOOLCHAIN), /usr/bin/$(TOOLCHAIN)-)g++
+INCLUDEDIR=$(if $(TOOLCHAIN), /usr/$(TOOLCHAIN)/libc/usr/include, /usr/include)
+CFLAGS=-fPIC -Os -Wall -Wextra -Wno-unused-parameter
+CXXFLAGS=$(CFLAGS)
 LIBRARIES=-lrt -lstdc++
 SOURCES=*.cpp
 HEADERS=*.hpp
@@ -20,8 +19,14 @@ PLATFORM?=STD
 
 all: $(OUTPUT)
 
-$(OUTPUT): $(SOURCES) $(HEADERS)
-	$(CC) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES) $(LIBRARIES)
+compat.o: compat.c
+	$(CC) -c $(CFLAGS) -DPLATFORM_$(PLATFORM) -o $@ compat.c
+
+$(OUTPUT): $(SOURCES) $(HEADERS) compat.o
+	$(CXX) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES) compat.o $(LIBRARIES)
+
+unittest: $(SOURCES) $(HEADERS) ut/*.cpp ut/*.hpp
+	$(CXX) $(CXXFLAGS) -o $@ $(SOURCES) ut/*.cpp $(LIBRARIES)
 
 clean:
 	rm -f *.o *.so
@@ -31,8 +36,11 @@ release: all
 
 install: all
 	mv $(OUTPUT) /usr/lib64
-	mkdir -p /usr/include/$(NAME)
-	cp $(HEADERS) /usr/include/$(NAME)
+	mkdir -p $(INCLUDEDIR)/$(NAME)
+	cp $(HEADERS) $(INCLUDEDIR)/$(NAME)
+
+test: unittest
+	./unittest
 
 .PHONY:
-	all release install clean
+	all release install clean test
