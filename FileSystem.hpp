@@ -42,6 +42,8 @@ namespace FileSystem {
     Stat lstat(const char * pathname);
     /** Create a directory **/
     void mkdir(const char * pathname, mode_t mode=0700);
+    /** Create a directory; returns true if it already exists **/
+    bool mkdirp(const char * pathname, mode_t mode=0700);
     /** Create a special or ordinary file **/
     void mknod(const char * pathname, mode_t mode, dev_t dev);
     /** Read value of a symbolic link **/

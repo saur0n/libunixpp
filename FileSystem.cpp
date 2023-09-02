@@ -72,6 +72,14 @@ void FileSystem::mkdir(const char * pathname, mode_t mode) {
     NORMAL_OP_WRAPPER(::mkdir(pathname, mode))
 }
 
+bool FileSystem::mkdirp(const char * pathname, mode_t mode) {
+    int retval=::mkdir(pathname, mode);
+    if (retval==EEXIST)
+        return true;
+    NORMAL_OP_WRAPPER(retval);
+    return false;
+}
+
 void FileSystem::mknod(const char * pathname, mode_t mode, dev_t dev) {
     NORMAL_OP_WRAPPER(::mknod(pathname, mode, dev));
 }
