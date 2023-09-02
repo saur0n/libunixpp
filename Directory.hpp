@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Directory operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_DIRECTORY_HPP
@@ -41,6 +41,30 @@ private:
     Directory &operator =(const Directory &other)=delete;
     
     DIR * dirp;
+};
+
+/** List of files in the directory **/
+class DirectoryList {
+public:
+    /** Filter function **/
+    using Filter=int(const Directory::Entry *);
+    /** Comparison function **/
+    using Compare=int(const Directory::Entry **, const Directory::Entry **);
+    /** Scan a directory for matching entries **/
+    DirectoryList(const char * name, Filter filter=nullptr, Compare compare=nullptr);
+    /** Free the directory list **/
+    ~DirectoryList();
+    /** Returns the length of the list **/
+    unsigned length() const { return count; }
+    /** Returns the i-th directory entry **/
+    const Directory::Entry &operator [](unsigned index) const { return *namelist[index]; }
+    
+private:
+    explicit DirectoryList(const DirectoryList &other)=delete;
+    DirectoryList &operator =(const DirectoryList &other)=delete;
+    
+    unsigned count;
+    Directory::Entry ** namelist;
 };
 
 }

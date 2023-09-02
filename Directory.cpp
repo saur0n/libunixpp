@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Directory operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include "Directory.hpp"
@@ -10,6 +10,8 @@
 #include "exception.hppi"
 
 using namespace upp;
+
+/******************************************************************************/
 
 Directory::Directory(const char * directory) : Directory(opendir(directory)) {}
 
@@ -40,4 +42,18 @@ void Directory::seek(long position) {
 
 Directory::Directory(DIR * dirp) : dirp(dirp) {
     THROW_SYSTEM_ERROR_IF(dirp==nullptr);
+}
+
+/******************************************************************************/
+
+DirectoryList::DirectoryList(const char * name, Filter filter, Compare compare) {
+    int retval=::scandir(name, &namelist, filter, compare);
+    THROW_SYSTEM_ERROR_IF(retval<0);
+    count=unsigned(retval);
+}
+
+DirectoryList::~DirectoryList() {
+    for (unsigned i=0; i<count; i++)
+        ::free(namelist[i]);
+    ::free(namelist);
 }
