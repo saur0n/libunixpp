@@ -9,6 +9,7 @@
 #define __UNITTEST_HPP
 
 #include <cassert>
+#include <system_error>
 #include "../FileSystem.hpp"
 
 using namespace upp;
@@ -20,6 +21,15 @@ struct UnitTest {
     void (* run)();
 };
 
+#define THROWS(statement, expected) \
+    try { \
+        statement; \
+    } \
+    catch (const std::system_error &se) { \
+        auto &code=se.code(); \
+        if ((code.category()!=std::system_category())||(code.value()!=expected)) \
+            throw; \
+    }
 #define REGISTER(name, run) \
     static UnitTest __UT(name, run);
 
