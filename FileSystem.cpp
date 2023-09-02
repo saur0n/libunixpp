@@ -10,6 +10,7 @@
 #include <sys/xattr.h>
 #include "exception.hppi"
 #include "FileSystem.hpp"
+#include <cstdio>
 
 using namespace upp;
 using std::string;
@@ -74,10 +75,12 @@ void FileSystem::mkdir(const char * pathname, mode_t mode) {
 
 bool FileSystem::mkdirp(const char * pathname, mode_t mode) {
     int retval=::mkdir(pathname, mode);
-    if (retval==EEXIST)
+    if (retval>=0)
+        return false;
+    else if (errno==EEXIST)
         return true;
-    NORMAL_OP_WRAPPER(retval);
-    return false;
+    else
+        THROW_SYSTEM_ERROR;
 }
 
 void FileSystem::mknod(const char * pathname, mode_t mode, dev_t dev) {
