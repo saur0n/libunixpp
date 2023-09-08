@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  File operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <sys/stat.h>
@@ -12,6 +12,8 @@
 #include "File.hpp"
 
 using namespace upp;
+
+/******************************************************************************/
 
 File::File(const char * filename) : Stream(open(filename, O_RDONLY)) {}
 
@@ -170,3 +172,26 @@ void File::stat(const char * pathname, unsigned int mask, struct statx * statxbu
 mode_t File::umask(mode_t mask) {
     return ::umask(mask);
 }
+
+static size_t copyFileRange(int in, off_t * offIn, int out, off_t * offOut, size_t length, unsigned flags) {
+    ssize_t result=copy_file_range(in, offIn, out, offOut, length, flags);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
+size_t File::copyRange(File &out, size_t length, unsigned flags) {
+    return copyFileRange(getDescriptor(), nullptr, out.getDescriptor(), nullptr, length, flags);
+}
+
+size_t File::copyRange(File &out, off_t &offOut, size_t length, unsigned flags) {
+    return copyFileRange(getDescriptor(), nullptr, out.getDescriptor(), &offOut, length, flags);
+}
+
+size_t File::copyRange(off_t &offIn, File &out, size_t length, unsigned flags) {
+    return copyFileRange(getDescriptor(), &offIn, out.getDescriptor(), nullptr, length, flags);
+}
+
+size_t File::copyRange(off_t &offIn, File &out, off_t &offOut, size_t length, unsigned flags) {
+    return copyFileRange(getDescriptor(), &offIn, out.getDescriptor(), &offOut, length, flags);
+}
+

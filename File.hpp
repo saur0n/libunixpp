@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  File operations
  *  
- *  © 2019—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2023, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_FILE_HPP
@@ -20,7 +20,7 @@ public:
     /** **/
     const int REMOVEDIR=AT_REMOVEDIR;
     /** Open file for reading **/
-    File(const char * filename);
+    explicit File(const char * filename);
     /** Open and possibly create a file **/
     File(const char * filename, int flags, int mode=0600);
     /** Open file for reading relative to this directory **/
@@ -101,6 +101,14 @@ public:
 #endif
     /** Set file mode creation mask **/
     static mode_t umask(mode_t mask);
+    /** Copy a range of file to another file **/
+    size_t copyRange(File &out, size_t length, unsigned flags=0);
+    /** Copy a range of file to another file **/
+    size_t copyRange(File &out, off_t &offOut, size_t length, unsigned flags=0);
+    /** Copy a range of file to another file **/
+    size_t copyRange(off_t &offIn, File &out, size_t length, unsigned flags=0);
+    /** Copy a range of file to another file **/
+    size_t copyRange(off_t &offIn, File &out, off_t &offOut, size_t length, unsigned flags=0);
 };
 
 }
