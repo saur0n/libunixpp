@@ -36,7 +36,7 @@ public:
     /** Remove an extended attribute **/
     void removeAttribute(const char * name);
     /** Get filesystem statistics **/
-    void statfs(struct statfs * buf);
+    void statfs(struct statfs &buf);
     /** Truncate a file to a specified length **/
     void truncate(off_t length=0);
     /** Manipulate file space **/
@@ -76,9 +76,9 @@ public:
     /** Read value of a symbolic link relative to this directory **/
     size_t readlink(const char * pathname, char * buffer, size_t length);
     /** Get file status **/
-    void stat(struct stat * statbuf);
+    void stat(struct stat &statbuf);
     /** Get file status relative to this directory **/
-    void stat(const char * pathname, struct stat * statbuf, int flags=0);
+    void stat(const char * pathname, struct stat &statbuf, int flags=0);
     /** Synchronize a file's in-core state with storage device **/
     void sync();
     /** Synchronize a file's in-core state with storage device **/
@@ -97,7 +97,7 @@ public:
     void exec(const char * pathname, char ** const argv, char ** const envp, int flags=0);
 #ifndef PLATFORM_MUSL
     /** Get file status (extended) relative to this directory **/
-    void stat(const char * pathname, unsigned int mask, struct statx * statxbuf, int flags=0);
+    void stat(const char * pathname, unsigned int mask, struct statx &statxbuf, int flags=0);
 #endif
     /** Set file mode creation mask **/
     static mode_t umask(mode_t mask);

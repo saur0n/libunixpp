@@ -41,8 +41,8 @@ void File::removeAttribute(const char * name) {
     THROW_SYSTEM_ERROR_STD(fremovexattr(getDescriptor(), name));
 }
 
-void File::statfs(struct statfs * buf) {
-    THROW_SYSTEM_ERROR_STD(fstatfs(getDescriptor(), buf));
+void File::statfs(struct statfs &buf) {
+    THROW_SYSTEM_ERROR_STD(fstatfs(getDescriptor(), &buf));
 }
 
 void File::truncate(off_t length) {
@@ -123,12 +123,12 @@ size_t File::readlink(const char * pathname, char * buffer, size_t length) {
     return size_t(retval);
 }
 
-void File::stat(struct stat * statbuf) {
-    THROW_SYSTEM_ERROR_STD(fstat(getDescriptor(), statbuf));
+void File::stat(struct stat &statbuf) {
+    THROW_SYSTEM_ERROR_STD(fstat(getDescriptor(), &statbuf));
 }
 
-void File::stat(const char * pathname, struct stat * statbuf, int flags) {
-    THROW_SYSTEM_ERROR_STD(fstatat(getDescriptor(), pathname, statbuf, flags));
+void File::stat(const char * pathname, struct stat &statbuf, int flags) {
+    THROW_SYSTEM_ERROR_STD(fstatat(getDescriptor(), pathname, &statbuf, flags));
 }
 
 void File::sync() {
@@ -164,8 +164,8 @@ void File::exec(const char * pathname, char ** const argv, char ** const envp, i
 }
 
 #ifndef PLATFORM_MUSL
-void File::stat(const char * pathname, unsigned int mask, struct statx * statxbuf, int flags) {
-    THROW_SYSTEM_ERROR_STD(statx(getDescriptor(), pathname, flags, mask, statxbuf));
+void File::stat(const char * pathname, unsigned int mask, struct statx &statxbuf, int flags) {
+    THROW_SYSTEM_ERROR_STD(statx(getDescriptor(), pathname, flags, mask, &statxbuf));
 }
 #endif
 
