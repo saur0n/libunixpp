@@ -26,7 +26,7 @@ $(OUTPUT): $(SOURCES) $(HEADERS) compat.o
 	$(CXX) -shared $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES) compat.o $(LIBRARIES)
 
 unittest: $(SOURCES) $(HEADERS) ut/*.cpp ut/*.hpp
-	$(CXX) -g $(CXXFLAGS) -o $@ $(SOURCES) ut/*.cpp $(LIBRARIES)
+	$(CXX) -g $(CXXFLAGS) -DPLATFORM_$(PLATFORM) -o $@ $(SOURCES) ut/*.cpp $(LIBRARIES)
 
 clean:
 	rm -f *.o *.so unittest
