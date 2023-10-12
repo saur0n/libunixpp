@@ -35,7 +35,7 @@ release: all
 	strip $(OUTPUT)
 
 install: all
-	install -s $(OUTPUT) /usr/lib64
+	install -s $(OUTPUT) /usr/local/lib
 	mkdir -p $(INCLUDEDIR)/$(NAME)
 	cp $(HEADERS) $(INCLUDEDIR)/$(NAME)
 
