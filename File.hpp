@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  File operations
  *  
- *  © 2019—2023, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2024, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_FILE_HPP
@@ -13,6 +13,12 @@
 #include "Stream.hpp"
 
 namespace upp {
+
+#ifdef PLATFORM_MUSL
+using Offset=off_t;
+#else
+using Offset=off64_t;
+#endif
 
 class File : public Stream {
     friend class Directory;
@@ -84,9 +90,9 @@ public:
     /** Synchronize a file's in-core state with storage device **/
     void syncData();
     /** Sync a file segment with disk **/
-    void sync(off64_t offset, off64_t nbytes, unsigned int flags=0);
+    void sync(Offset offset, Offset nbytes, unsigned int flags=0);
     /** Initiate file readahead into page cache **/
-    void readAhead(off64_t offset, size_t count);
+    void readAhead(Offset offset, size_t count);
     /** Commit filesystem caches to disk **/
     void syncFileSystem();
     /** Change file timestamps **/

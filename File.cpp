@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  File operations
  *  
- *  © 2019—2023, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2024, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <sys/stat.h>
@@ -139,11 +139,11 @@ void File::syncData() {
     THROW_SYSTEM_ERROR_STD(fdatasync(getDescriptor()));
 }
 
-void File::sync(off64_t offset, off64_t nbytes, unsigned int flags) {
+void File::sync(Offset offset, Offset nbytes, unsigned int flags) {
     THROW_SYSTEM_ERROR_STD(sync_file_range(getDescriptor(), offset, nbytes, flags));
 }
 
-void File::readAhead(off64_t offset, size_t count) {
+void File::readAhead(Offset offset, size_t count) {
     THROW_SYSTEM_ERROR_STD(readahead(getDescriptor(), offset, count));
 }
 
