@@ -14,12 +14,6 @@
 
 namespace upp {
 
-#ifdef PLATFORM_MUSL
-using Offset=off_t;
-#else
-using Offset=off64_t;
-#endif
-
 class File : public Stream {
     friend class Directory;
 public:
@@ -90,9 +84,9 @@ public:
     /** Synchronize a file's in-core state with storage device **/
     void syncData();
     /** Sync a file segment with disk **/
-    void sync(Offset offset, Offset nbytes, unsigned int flags=0);
+    void sync(off_t offset, off_t nbytes, unsigned int flags=0);
     /** Initiate file readahead into page cache **/
-    void readAhead(Offset offset, size_t count);
+    void readAhead(off_t offset, size_t count);
     /** Commit filesystem caches to disk **/
     void syncFileSystem();
     /** Change file timestamps **/

@@ -139,11 +139,11 @@ void File::syncData() {
     THROW_SYSTEM_ERROR_STD(fdatasync(getDescriptor()));
 }
 
-void File::sync(Offset offset, Offset nbytes, unsigned int flags) {
+void File::sync(off_t offset, off_t nbytes, unsigned int flags) {
     THROW_SYSTEM_ERROR_STD(sync_file_range(getDescriptor(), offset, nbytes, flags));
 }
 
-void File::readAhead(Offset offset, size_t count) {
+void File::readAhead(off_t offset, size_t count) {
     THROW_SYSTEM_ERROR_STD(readahead(getDescriptor(), offset, count));
 }
 
