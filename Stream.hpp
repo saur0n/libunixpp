@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2023, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2024, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_STREAM_HPP
@@ -70,6 +70,8 @@ protected:
     Stream(int fd);
     /** Perform an operation on file descriptor **/
     unsigned ioctl(int request, void * argp);
+    /** Perform an operation on file descriptor **/
+    unsigned ioctl(int request, int argp);
     /** Manipulate file descriptor **/
     unsigned fcntl(int cmd);
     /** Manipulate file descriptor **/
