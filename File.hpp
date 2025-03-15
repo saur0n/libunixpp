@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  File operations
  *  
- *  © 2019—2024, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2025, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_FILE_HPP
@@ -10,6 +10,7 @@
 
 #include <fcntl.h>
 #include <sys/file.h>
+#include <sys/stat.h>
 #include "Stream.hpp"
 
 namespace upp {
