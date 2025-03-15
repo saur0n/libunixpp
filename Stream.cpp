@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2024, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2025, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <fcntl.h>
@@ -13,6 +13,7 @@
 #include "Stream.hpp"
 
 using namespace upp;
+using std::initializer_list;
 
 class StdStream : public Stream {
 public:
@@ -59,6 +60,25 @@ size_t Stream::read(void * buffer, size_t count, off_t offset) {
     return size_t(result);
 }
 
+size_t Stream::read(const initializer_list<struct iovec> &vec) {
+    ssize_t result=::readv(fd, vec.begin(), vec.size());
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
+size_t Stream::read(const initializer_list<struct iovec> &vec, off_t offset) {
+    ssize_t result=::preadv(fd, vec.begin(), vec.size(), offset);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
+size_t Stream::read(const initializer_list<struct iovec> &vec, off_t offset,
+        int flags) {
+    ssize_t result=::preadv2(fd, vec.begin(), vec.size(), offset, flags);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
 size_t Stream::write(const void * buffer, size_t count) {
     ssize_t result=::write(fd, buffer, count);
     THROW_SYSTEM_ERROR_IF(result<0);
@@ -67,6 +87,24 @@ size_t Stream::write(const void * buffer, size_t count) {
 
 size_t Stream::write(const void * buffer, size_t count, off_t offset) {
     ssize_t result=::pwrite(fd, buffer, count, offset);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
+size_t Stream::write(const initializer_list<struct iovec> &vec) {
+    ssize_t result=::writev(fd, vec.begin(), vec.size());
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
+size_t Stream::write(const initializer_list<struct iovec> &vec, off_t offset) {
+    ssize_t result=::pwritev(fd, vec.begin(), vec.size(), offset);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return size_t(result);
+}
+
+size_t Stream::write(const initializer_list<struct iovec> &vec, off_t offset, int flags) {
+    ssize_t result=::pwritev2(fd, vec.begin(), vec.size(), offset, flags);
     THROW_SYSTEM_ERROR_IF(result<0);
     return size_t(result);
 }

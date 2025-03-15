@@ -2,13 +2,15 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2024, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2025, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_STREAM_HPP
 #define __UNIXPP_STREAM_HPP
 
+#include <initializer_list>
 #include <sys/types.h>
+#include <sys/uio.h>
 #include <unistd.h>
 
 namespace upp {
@@ -37,13 +39,27 @@ public:
     /** Returns current read/write file offset **/
     off_t tell() { return seek(0, SEEK_CUR); }
     /** Read from the stream **/
-    virtual size_t read(void * buffer, size_t count);
+    size_t read(void * buffer, size_t count);
     /** Read from the stream at a given offset **/
     size_t read(void * buffer, size_t count, off_t offset);
+    /** Read from the stream to multiple buffers **/
+    size_t read(const std::initializer_list<struct iovec> &vec);
+    /** Read from the stream to multiple buffers **/
+    size_t read(const std::initializer_list<struct iovec> &vec, off_t offset);
+    /** Read from the stream to multiple buffers **/
+    size_t read(const std::initializer_list<struct iovec> &vec, off_t offset,
+        int flags);
     /** Write to the stream **/
-    virtual size_t write(const void * buffer, size_t count);
+    size_t write(const void * buffer, size_t count);
     /** Write to the stream at a given offset **/
     size_t write(const void * buffer, size_t count, off_t offset);
+    /** Write multiple buffers to the stream **/
+    size_t write(const std::initializer_list<struct iovec> &vec);
+    /** Write multiple buffers to the stream at a given offset **/
+    size_t write(const std::initializer_list<struct iovec> &vec, off_t offset);
+    /** Write multiple buffers to the stream at a given offset **/
+    size_t write(const std::initializer_list<struct iovec> &vec, off_t offset,
+        int flags);
     /** Get file status **/
     void stat(struct stat * statbuf);
     /** Returns file descriptor flags **/
