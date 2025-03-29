@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Polling operations
  *  
- *  © 2020—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2020—2025, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_POLL_HPP
@@ -43,11 +43,11 @@ public:
     /** Wait for events on file descriptors **/
     unsigned poll(int timeout);
     /** Wait for events on file descriptors **/
-    unsigned poll(bool &interrupted, int timeout);
+    unsigned poll(AtomicBool &interrupted, int timeout);
     /** Wait for events on file descriptors, waiting for a signal safely **/
     unsigned poll(const timespec * tmo_p, const sigset_t * sigmask);
     /** Wait for events on file descriptors, waiting for a signal safely **/
-    unsigned poll(bool &interrupted, const timespec * tmo_p, const sigset_t * sigmask);
+    unsigned poll(AtomicBool &interrupted, const timespec * tmo_p, const sigset_t * sigmask);
     /** Returns returned events for the specified stream **/
     short revents(size_t index) const { return pollfds[index].revents; }
     /** Shorthand for revents() **/
@@ -55,11 +55,11 @@ public:
     /** Poll just one file descriptor **/
     static short poll(Stream &stream, short events, int timeout);
     /** Poll just one file descriptor **/
-    static short poll(bool &interrupted, Stream &stream, short events, int timeout);
+    static short poll(AtomicBool &interrupted, Stream &stream, short events, int timeout);
     /** Poll just one file descriptor, waiting for a signal safely **/
     static short poll(Stream &stream, short events, const timespec * tmo_p, const sigset_t * sigmask);
     /** Poll just one file descriptor, waiting for a signal safely **/
-    static short poll(bool &interrupted, Stream &stream, short events, const timespec * tmo_p, const sigset_t * sigmask);
+    static short poll(AtomicBool &interrupted, Stream &stream, short events, const timespec * tmo_p, const sigset_t * sigmask);
     
 private:
     std::vector<struct pollfd> pollfds;

@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Polling operations
  *  
- *  © 2020—2021, Sauron <libunixpp@saur0n.science>
+ *  © 2020—2025, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include "exception.hppi"
@@ -15,7 +15,7 @@ static unsigned _poll(pollfd * pollfds, size_t count, int timeout) {
     NORMAL_IO_WRAPPER(int, unsigned, ::poll(pollfds, count, timeout));
 }
 
-static unsigned _poll(bool &interrupted, pollfd * pollfds, size_t count, int timeout) {
+static unsigned _poll(AtomicBool &interrupted, pollfd * pollfds, size_t count, int timeout) {
     INTERRUPTED_IO_WRAPPER(int, unsigned, ::poll(pollfds, count, timeout));
 }
 
@@ -23,7 +23,7 @@ static unsigned _poll(pollfd * pollfds, size_t count, const timespec * tmo_p, co
     NORMAL_IO_WRAPPER(int, unsigned, ::ppoll(pollfds, count, tmo_p, sigmask));
 }
 
-static unsigned _poll(bool &interrupted, pollfd * pollfds, size_t count, const timespec * tmo_p, const sigset_t * sigmask) {
+static unsigned _poll(AtomicBool &interrupted, pollfd * pollfds, size_t count, const timespec * tmo_p, const sigset_t * sigmask) {
     INTERRUPTED_IO_WRAPPER(int, unsigned, ::ppoll(pollfds, count, tmo_p, sigmask));
 }
 
@@ -40,7 +40,7 @@ unsigned Poll::poll(int timeout) {
     return _poll(pollfds.data(), pollfds.size(), timeout);
 }
 
-unsigned Poll::poll(bool &interrupted, int timeout) {
+unsigned Poll::poll(AtomicBool &interrupted, int timeout) {
     return _poll(interrupted, pollfds.data(), pollfds.size(), timeout);
 }
 
@@ -48,7 +48,7 @@ unsigned Poll::poll(const timespec * tmo_p, const sigset_t * sigmask) {
     return _poll(pollfds.data(), pollfds.size(), tmo_p, sigmask);
 }
 
-unsigned Poll::poll(bool &interrupted, const timespec * tmo_p, const sigset_t * sigmask) {
+unsigned Poll::poll(AtomicBool &interrupted, const timespec * tmo_p, const sigset_t * sigmask) {
     return _poll(interrupted, pollfds.data(), pollfds.size(), tmo_p, sigmask);
 }
 
@@ -58,7 +58,7 @@ short Poll::poll(Stream &stream, short events, int timeout) {
     return pollfd.revents;
 }
 
-short Poll::poll(bool &interrupted, Stream &stream, short events, int timeout) {
+short Poll::poll(AtomicBool &interrupted, Stream &stream, short events, int timeout) {
     struct pollfd pollfd={stream.fd, events, 0};
     _poll(interrupted, &pollfd, 1, timeout);
     return pollfd.revents;
@@ -70,7 +70,7 @@ short Poll::poll(Stream &stream, short events, const timespec * tmo_p, const sig
     return pollfd.revents;
 }
 
-short Poll::poll(bool &interrupted, Stream &stream, short events, const timespec * tmo_p, const sigset_t * sigmask) {
+short Poll::poll(AtomicBool &interrupted, Stream &stream, short events, const timespec * tmo_p, const sigset_t * sigmask) {
     struct pollfd pollfd={stream.fd, events, 0};
     _poll(interrupted, &pollfd, 1, tmo_p, sigmask);
     return pollfd.revents;

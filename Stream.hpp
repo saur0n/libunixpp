@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include "AtomicBool.hpp"
 
 namespace upp {
 
@@ -40,14 +41,25 @@ public:
     off_t tell() { return seek(0, SEEK_CUR); }
     /** Read from the stream **/
     size_t read(void * buffer, size_t count);
+    /** Read from the stream **/
+    size_t read(AtomicBool &interrupted, void * buffer, size_t count);
     /** Read from the stream at a given offset **/
     size_t read(void * buffer, size_t count, off_t offset);
+    /** Read from the stream at a given offset **/
+    size_t read(AtomicBool &interrupted, void * buffer, size_t count, off_t offset);
     /** Read from the stream to multiple buffers **/
     size_t read(const std::initializer_list<struct iovec> &vec);
     /** Read from the stream to multiple buffers **/
+    size_t read(AtomicBool &interrupted, const std::initializer_list<struct iovec> &vec);
+    /** Read from the stream to multiple buffers **/
     size_t read(const std::initializer_list<struct iovec> &vec, off_t offset);
     /** Read from the stream to multiple buffers **/
+    size_t read(AtomicBool &interrupted, const std::initializer_list<struct iovec> &vec, off_t offset);
+    /** Read from the stream to multiple buffers **/
     size_t read(const std::initializer_list<struct iovec> &vec, off_t offset,
+        int flags);
+    /** Read from the stream to multiple buffers **/
+    size_t read(AtomicBool &interrupted, const std::initializer_list<struct iovec> &vec, off_t offset,
         int flags);
     /** Write to the stream **/
     size_t write(const void * buffer, size_t count);

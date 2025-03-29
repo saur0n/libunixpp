@@ -49,15 +49,19 @@ off_t Stream::seek(off_t offset, int whence) {
 }
 
 size_t Stream::read(void * buffer, size_t count) {
-    ssize_t result=::read(fd, buffer, count);
-    THROW_SYSTEM_ERROR_IF(result<0);
-    return size_t(result);
+    NORMAL_IO_WRAPPER(ssize_t, size_t, ::read(fd, buffer, count));
+}
+
+size_t Stream::read(AtomicBool &interrupted, void * buffer, size_t count) {
+    INTERRUPTED_IO_WRAPPER(ssize_t, size_t, ::read(fd, buffer, count));
 }
 
 size_t Stream::read(void * buffer, size_t count, off_t offset) {
-    ssize_t result=::pread(fd, buffer, count, offset);
-    THROW_SYSTEM_ERROR_IF(result<0);
-    return size_t(result);
+    NORMAL_IO_WRAPPER(ssize_t, size_t, ::pread(fd, buffer, count, offset));
+}
+
+size_t Stream::read(AtomicBool &interrupted, void * buffer, size_t count, off_t offset) {
+    INTERRUPTED_IO_WRAPPER(ssize_t, size_t, ::pread(fd, buffer, count, offset));
 }
 
 size_t Stream::read(const initializer_list<struct iovec> &vec) {
