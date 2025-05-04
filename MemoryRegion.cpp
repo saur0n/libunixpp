@@ -11,6 +11,20 @@
 
 using namespace upp;
 
+#ifdef PLATFORM_MUSL
+int pkey_alloc(unsigned int flags, unsigned int access_rights) {
+    throw std::system_error(ENOSYS, std::system_category());
+}
+
+int pkey_free(int pkey) {
+    throw std::system_error(ENOSYS, std::system_category());
+}
+
+int pkey_mprotect(void * addr, size_t size, int prot, int pkey) {
+    throw std::system_error(ENOSYS, std::system_category());
+}
+#endif
+
 /******************************************************************************/
 
 ProtectionKey::ProtectionKey(unsigned int accessRights) :
