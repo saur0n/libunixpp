@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Serial port interfaces
  *  
- *  © 2021—2024, Sauron <libunixpp@saur0n.science>
+ *  © 2021—2025, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_SERIALPORT_HPP
@@ -15,37 +15,62 @@
 
 namespace upp {
 
+/** Copied from termbits.h, because including it directly leads to a conflict **/
+struct termios2 {
+    struct termios tty;
+    speed_t c_ispeed;
+    speed_t c_ospeed;
+};
+
 /**/
 class SerialPortConfiguration {
     friend class SerialPort;
 public:
-    /** Set the input baud rate **/
+    /** Initialize the structure with zeros **/
+    SerialPortConfiguration();
+    /** Set the input baud rate (from predefined speed list) **/
+    void setInputSpeed(speed_t speed);
+    /** Set the non-standard input baud rate **/
     void setInputBaudRate(speed_t speed);
-    /** Set the output baud rate **/
+    /** Set the output baud rate (from predefined speed list)**/
+    void setOutputSpeed(speed_t speed);
+    /** Set the non-standard output baud rate **/
     void setOutputBaudRate(speed_t speed);
-    /** Set both input and output baud rate **/
+    /** Set both input and output baud rate (from predefined speed list)**/
+    void setSpeed(speed_t speed);
+    /** Set the non-standard input and output baud rate **/
     void setBaudRate(speed_t speed);
+    /** Returns the control flags **/
+    unsigned getFlags() const { return tty.tty.c_cflag; }
     /** Set the specified control flags **/
     void setFlags(unsigned flags);
     /** Unset the specified control flags **/
     void clearFlags(unsigned flags);
+    /** Returns the local flags **/
+    unsigned getLocalFlags() const { return tty.tty.c_lflag; }
     /** Set the specified local mode flags **/
     void setLocalFlags(unsigned flags);
     /** Unset the specified local mode flags **/
     void clearLocalFlags(unsigned flags);
+    /** Returns the input flags **/
+    unsigned getInputFlags() const { return tty.tty.c_iflag; }
     /** Set the specified input processing mode flags **/
     void setInputFlags(unsigned flags);
     /** Unset the specified input processing mode flags **/
     void clearInputFlags(unsigned flags);
+    /** Returns the output flags **/
+    unsigned getOutputFlags() const { return tty.tty.c_oflag; }
     /** Set the specified output processing mode flags **/
     void setOutputFlags(unsigned flags);
     /** Unset the specified output processing mode flags **/
     void clearOutputFlags(unsigned flags);
+    /** Set the specified timeout **/
+    void setTimeout(unsigned char index, cc_t value);
     /** Set VMIN and VTIME **/
     void setTimeouts(cc_t vmin, cc_t vtime);
     
 private:
-    struct termios tty;
+    struct termios2 tty;
 };
 
 /**/
@@ -80,7 +105,27 @@ public:
         /** ? **/
         OUT2=0x4000,
     };
-    /**/
+    /** Argument for flush() **/
+    enum Flush {
+        /** Flushes data received but not read **/
+        IFLUSH=TCIFLUSH,
+        /** Flushes data written but not transmitted **/
+        OFLUSH=TCOFLUSH,
+        /** Flushes data received but not read and written but not transmitted **/
+        IOFLUSH=TCIOFLUSH
+    };
+    /** Argument for flow() **/
+    enum Flow {
+        /** **/
+        OOFF=TCOOFF,
+        /** **/
+        OON=TCOON,
+        /** **/
+        IOFF=TCIOFF,
+        /** **/
+        ION=TCION
+    };
+    /** Open the serial port **/
     SerialPort(const char * filename, int flags=O_RDWR|O_NOCTTY|O_NDELAY);
     /** Get the serial port configuration **/
     SerialPortConfiguration getConfiguration();
