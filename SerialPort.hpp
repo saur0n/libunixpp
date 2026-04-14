@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Serial port interfaces
  *  
- *  © 2021—2025, Sauron <libunixpp@saur0n.science>
+ *  © 2021—2026, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_SERIALPORT_HPP
@@ -11,7 +11,7 @@
 #include <linux/serial.h>
 #include <sys/ioctl.h>
 #include <termios.h>
-#include "File.hpp"
+#include "Wrapper.hpp"
 
 namespace upp {
 
@@ -73,8 +73,8 @@ private:
     struct termios2 tty;
 };
 
-/**/
-class SerialPort : public upp::File {
+/** Stream wrapper for serial ports **/
+class SerialPort : public Wrapper {
 public:
     /** Modem bits **/
     enum {
@@ -125,12 +125,18 @@ public:
         /** **/
         ION=TCION
     };
-    /** Open the serial port **/
-    SerialPort(const char * filename, int flags=O_RDWR|O_NOCTTY|O_NDELAY);
+    /** Wrap the opened serial port **/
+    explicit SerialPort(Stream &stream);
     /** Get the serial port configuration **/
-    SerialPortConfiguration getConfiguration();
+    SerialPortConfiguration getConfiguration() const;
     /** Set the serial port configuration **/
     void setConfiguration(const SerialPortConfiguration &configuration);
+    /** Automatically configure the serial port **/
+    void doAutoconfig();
+    /** Get the lowlevel serial port information **/
+    struct ::serial_struct getInformation() const;
+    /** Set the lowlevel serial port information **/
+    void setInformation(const struct ::serial_struct &information);
     /**/
     void sendBreak(int duration);
     /** Wait until all data previously written to the serial line **/
@@ -140,7 +146,7 @@ public:
     /** Suspend or restart transmission on the serial port **/
     void flow(int action);
     /** Get the status of modem bits **/
-    int getModemStatus();
+    int getModemStatus() const;
     /** Set the status of modem bits **/
     void setModemStatus(int status);
     /** Clear the indicated modem bits **/
@@ -149,8 +155,18 @@ public:
     void setModemBits(int bits);
     /** Wait for any of the 4 modem bits (DCD, RI, DSR, CTS) to change **/
     void waitModemBits(int bits);
+    /** Get software carrier flag **/
+    bool getSoftCarrier() const;
+    /** Set software carrier flag **/
+    void setSoftCarrier(bool softCarrier);
     /** Get counts of input serial line interrupts (DCD, RI, DSR, CTS) **/
-    serial_icounter_struct getInterruptCount();
+    serial_icounter_struct getInterruptCount() const;
+    /** Get line status register **/
+    int getLineStatusRegister() const;
+    /** Get output queue size **/
+    int getOutputQueue() const;
+    /** Insert the given byte in the input queue **/
+    void unshift(char ch);
 };
 
 }

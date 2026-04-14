@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Serial port interfaces
  *  
- *  © 2021—2025, Sauron <libunixpp@saur0n.science>
+ *  © 2021—2026, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <cstring>
@@ -104,17 +104,31 @@ void SerialPortConfiguration::setTimeouts(cc_t vmin, cc_t vtime) {
 
 /******************************************************************************/
 
-SerialPort::SerialPort(const char * filename, int flags) : File(filename, flags) {}
+SerialPort::SerialPort(Stream &stream) : Wrapper(stream) {}
 
-SerialPortConfiguration SerialPort::getConfiguration() {
+SerialPortConfiguration SerialPort::getConfiguration() const {
     SerialPortConfiguration configuration;
     struct termios2 * ptty=&configuration.tty;
-    Stream::ioctl(IOC_TCGETS2, ptty);
+    ioctl(/*IOC_*/TCGETS2, ptty);
     return configuration;
 }
 
 void SerialPort::setConfiguration(const SerialPortConfiguration &configuration) {
-    Stream::ioctl(IOC_TCSETS2, const_cast<termios2 *>(&configuration.tty));
+    ioctl(/*IOC_*/TCSETS2, &configuration.tty);
+}
+
+void SerialPort::doAutoconfig() {
+    ioctl(TIOCSERCONFIG);
+}
+
+struct ::serial_struct SerialPort::getInformation() const {
+    struct ::serial_struct result;
+    ioctl(TIOCGSERIAL, &result);
+    return result;
+}
+
+void SerialPort::setInformation(const struct ::serial_struct &information) {
+    ioctl(TIOCSSERIAL, &information);
 }
 
 void SerialPort::sendBreak(int duration) {
@@ -135,25 +149,55 @@ void SerialPort::flow(int action) {
     NORMAL_OP_WRAPPER(tcflow(getDescriptor(), action));
 }
 
-int SerialPort::getModemStatus() {
+int SerialPort::getModemStatus() const {
     int result;
     ioctl(TIOCMGET, &result);
     return result;
 }
 
 void SerialPort::setModemStatus(int status) {
-    ioctl(TIOCMSET, &status);
+    const int * arg=&status;
+    ioctl(TIOCMSET, arg);
 }
 
 void SerialPort::clearModemBits(int bits) {
-    ioctl(TIOCMBIC, &bits);
+    const int * arg=&bits;
+    ioctl(TIOCMBIC, arg);
 }
 
 void SerialPort::setModemBits(int bits) {
-    ioctl(TIOCMBIS, &bits);
+    const int * arg=&bits;
+    ioctl(TIOCMBIS, arg);
 }
 
 void SerialPort::waitModemBits(int bits) {
     ioctl(TIOCMIWAIT, bits);
 }
 
+bool SerialPort::getSoftCarrier() const {
+    int result;
+    ioctl(TIOCGSOFTCAR, &result);
+    return result;
+}
+
+void SerialPort::setSoftCarrier(bool softCarrier) {
+    const int arg=softCarrier?1:0;
+    ioctl(TIOCSSOFTCAR, &arg);
+}
+
+int SerialPort::getLineStatusRegister() const {
+    int result;
+    ioctl(TIOCSERGETLSR, &result);
+    return result;
+}
+
+int SerialPort::getOutputQueue() const {
+    int result;
+    ioctl(TIOCOUTQ, &result);
+    return result;
+}
+
+void SerialPort::unshift(char ch) {
+    const char * arg=&ch;
+    ioctl(TIOCSTI, arg);
+}
