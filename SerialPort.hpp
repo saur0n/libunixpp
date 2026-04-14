@@ -169,6 +169,44 @@ public:
     void unshift(char ch);
 };
 
+/** Stream wrapper for terminals **/
+class Terminal : public SerialPort {
+public:
+    /** Terminal window size **/
+    using WindowSize=struct ::winsize;
+    /** Wrap the opened terminal **/
+    explicit Terminal(Stream &stream);
+    /** Returns whether the terminal is in exclusive mode **/
+    bool getExclusive() const;
+    /** Put the terminal into exclusive mode **/
+    void setExclusive();
+    /** Disable exclusive mode **/
+    void clearExclusive();
+    /** Get the line discipline of the terminal **/
+    int getLineDiscipline() const;
+    /** Set the line discipline of the terminal **/
+    void setLineDiscipline(int lineDiscipline);
+    /** Get the process group ID of the foreground process group on this terminal **/
+    pid_t getProcessGroup() const;
+    /** Set the foreground process group ID of this terminal **/
+    void setProcessGroup(pid_t processGroup);
+    /** Get the session ID of the given terminal **/
+    int getSessionID() const;
+    /** Get the window size **/
+    WindowSize getWindowSize() const;
+    /** Set the window size **/
+    void setWindowSize(const WindowSize &windowSize);
+    /** Make the given terminal the controlling terminal of the process **/
+    void setControlling(bool steal);
+    /** Give up this controlling terminal **/
+    void resetControlling();
+    /** Redirect the console output to this terminal **/
+    void redirectConsole();
+    /** Ask the terminal to be hung up **/
+    void hangup();
+    
+};
+
 }
 
 #endif

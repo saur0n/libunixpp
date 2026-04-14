@@ -201,3 +201,73 @@ void SerialPort::unshift(char ch) {
     const char * arg=&ch;
     ioctl(TIOCSTI, arg);
 }
+
+Terminal::Terminal(Stream &stream) : SerialPort(stream) {}
+
+bool Terminal::getExclusive() const {
+    int result;
+    ioctl(TIOCGEXCL, &result);
+    return result;
+}
+
+void Terminal::setExclusive() {
+    ioctl(TIOCEXCL);
+}
+
+void Terminal::clearExclusive() {
+    ioctl(TIOCNXCL);
+}
+
+int Terminal::getLineDiscipline() const {
+    int result;
+    ioctl(TIOCGETD, &result);
+    return result;
+}
+
+void Terminal::setLineDiscipline(int lineDiscipline) {
+    const int * arg=&lineDiscipline;
+    ioctl(TIOCSETD, arg);
+}
+
+pid_t Terminal::getProcessGroup() const {
+    pid_t result;
+    ioctl(TIOCGPGRP, &result);
+    return result;
+}
+
+void Terminal::setProcessGroup(pid_t processGroup) {
+    const pid_t * arg=&processGroup;
+    ioctl(TIOCSPGRP, arg);
+}
+
+int Terminal::getSessionID() const {
+    int result;
+    ioctl(TIOCGSID, &result);
+    return result;
+}
+
+Terminal::WindowSize Terminal::getWindowSize() const {
+    WindowSize result;
+    ioctl(TIOCGWINSZ, &result);
+    return result;
+}
+
+void Terminal::setWindowSize(const WindowSize &windowSize) {
+    ioctl(TIOCSWINSZ, &windowSize);
+}
+
+void Terminal::setControlling(bool steal) {
+    ioctl(TIOCSCTTY, steal?1:0);
+}
+
+void Terminal::resetControlling() {
+    ioctl(TIOCNOTTY);
+}
+
+void Terminal::redirectConsole() {
+    ioctl(TIOCCONS);
+}
+
+void Terminal::hangup() {
+    ioctl(TIOCVHANGUP);
+}
