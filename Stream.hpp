@@ -22,13 +22,14 @@ class InterruptedException {};
 /** Base class for all descriptor-based objects **/
 class Stream {
     friend class Poll;
+    friend class Wrapper;
 public:
     /** Standard I/O streams **/
     enum Standard { IN, OUT, ERR };
-    /**/
-    Stream(Stream &&other);
+    /** Move file descriptor from another stream **/
+    explicit Stream(Stream &&other);
     /** Duplicate a file descriptor **/
-    Stream(const Stream &other);
+    explicit Stream(const Stream &other);
     /** Duplicate a file descriptor on the specified one **/
     Stream(const Stream &other, int newfd);
     /** Duplicate a file descriptor on the specified one **/
@@ -95,9 +96,11 @@ public:
     
 protected:
     /** Initialize by file descriptor **/
-    Stream(int fd);
+    explicit Stream(int fd);
     /** Perform an operation on file descriptor **/
     unsigned ioctl(int request, void * argp);
+    /** Perform an operation on file descriptor **/
+    unsigned ioctl(int request, const void * argp) const;
     /** Perform an operation on file descriptor **/
     unsigned ioctl(int request, int argp);
     /** Manipulate file descriptor **/

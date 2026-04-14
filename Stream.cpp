@@ -17,7 +17,7 @@ using std::initializer_list;
 
 class StdStream : public Stream {
 public:
-    StdStream(Stream::Standard no) : Stream(int(no)) {}
+    explicit StdStream(Stream::Standard no) : Stream(int(no)) {}
 };
 
 static StdStream sin(Stream::IN), sout(Stream::OUT), serr(Stream::ERR);
@@ -166,6 +166,12 @@ Stream::Stream(int fd) : fd(fd) {
 }
 
 unsigned Stream::ioctl(int request, void * argp) {
+    int result=::ioctl(fd, request, argp);
+    THROW_SYSTEM_ERROR_IF(result<0);
+    return unsigned(result);
+}
+
+unsigned Stream::ioctl(int request, const void * argp) const {
     int result=::ioctl(fd, request, argp);
     THROW_SYSTEM_ERROR_IF(result<0);
     return unsigned(result);
