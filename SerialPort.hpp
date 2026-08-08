@@ -30,6 +30,51 @@ public:
     SerialPortConfiguration();
     /** Set the input baud rate (from predefined speed list) **/
     void setInputSpeed(speed_t speed);
+    /** Set the output baud rate (from predefined speed list)**/
+    void setOutputSpeed(speed_t speed);
+    /** Set both input and output baud rate (from predefined speed list)**/
+    void setSpeed(speed_t speed);
+    /** Returns the control flags **/
+    unsigned getFlags() const { return tty.tty.c_cflag; }
+    /** Set the specified control flags **/
+    void setFlags(unsigned flags);
+    /** Unset the specified control flags **/
+    void clearFlags(unsigned flags);
+    /** Returns the local flags **/
+    unsigned getLocalFlags() const { return tty.tty.c_lflag; }
+    /** Set the specified local mode flags **/
+    void setLocalFlags(unsigned flags);
+    /** Unset the specified local mode flags **/
+    void clearLocalFlags(unsigned flags);
+    /** Returns the input flags **/
+    unsigned getInputFlags() const { return tty.tty.c_iflag; }
+    /** Set the specified input processing mode flags **/
+    void setInputFlags(unsigned flags);
+    /** Unset the specified input processing mode flags **/
+    void clearInputFlags(unsigned flags);
+    /** Returns the output flags **/
+    unsigned getOutputFlags() const { return tty.tty.c_oflag; }
+    /** Set the specified output processing mode flags **/
+    void setOutputFlags(unsigned flags);
+    /** Unset the specified output processing mode flags **/
+    void clearOutputFlags(unsigned flags);
+    /** Set the specified timeout **/
+    void setTimeout(unsigned char index, cc_t value);
+    /** Set VMIN and VTIME **/
+    void setTimeouts(cc_t vmin, cc_t vtime);
+    
+private:
+    struct termios2 tty;
+};
+
+/** Extended serial port configuration, allows to set arbitrary baudrate **/
+class SerialPortConfiguration2 {
+    friend class SerialPort;
+public:
+    /** Initialize the structure with zeros **/
+    SerialPortConfiguration2();
+    /** Set the input baud rate (from predefined speed list) **/
+    void setInputSpeed(speed_t speed);
     /** Set the non-standard input baud rate **/
     void setInputBaudRate(speed_t speed);
     /** Set the output baud rate (from predefined speed list)**/
@@ -131,6 +176,10 @@ public:
     SerialPortConfiguration getConfiguration() const;
     /** Set the serial port configuration **/
     void setConfiguration(const SerialPortConfiguration &configuration);
+    /** Get the serial port configuration **/
+    SerialPortConfiguration2 getConfiguration2() const;
+    /** Set the serial port configuration **/
+    void setConfiguration2(const SerialPortConfiguration2 &configuration);
     /** Automatically configure the serial port **/
     void doAutoconfig();
     /** Get the lowlevel serial port information **/

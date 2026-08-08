@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2025, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2026, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #include <fcntl.h>
@@ -165,13 +165,13 @@ Stream::Stream(int fd) : fd(fd) {
     THROW_SYSTEM_ERROR_IF(fd<0);
 }
 
-unsigned Stream::ioctl(int request, void * argp) {
+unsigned Stream::ioctl(int request, void * argp) const {
     int result=::ioctl(fd, request, argp);
     THROW_SYSTEM_ERROR_IF(result<0);
     return unsigned(result);
 }
 
-unsigned Stream::ioctl(int request, const void * argp) const {
+unsigned Stream::ioctl(int request, const void * argp) {
     int result=::ioctl(fd, request, argp);
     THROW_SYSTEM_ERROR_IF(result<0);
     return unsigned(result);

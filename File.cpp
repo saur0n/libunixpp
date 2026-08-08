@@ -23,6 +23,8 @@ File::File(const File &dir, const char * filename) : Stream(openat(dir.getDescri
 
 File::File(const File &dir, const char * filename, int flags) : Stream(openat(dir.getDescriptor(), filename, flags)) {}
 
+File::File(const File &other) : Stream(other) {}
+
 void File::setAttribute(const char * name, const char * value, size_t size, int flags) {
     THROW_SYSTEM_ERROR_STD(fsetxattr(getDescriptor(), name, value, size, flags));
 }

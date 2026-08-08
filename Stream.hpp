@@ -96,15 +96,25 @@ protected:
     /** Initialize by file descriptor **/
     explicit Stream(int fd);
     /** Perform an operation on file descriptor **/
-    unsigned ioctl(int request, void * argp);
+    unsigned ioctl(int request, void * argp) const;
     /** Perform an operation on file descriptor **/
-    unsigned ioctl(int request, const void * argp) const;
+    unsigned ioctl(int request, const void * argp);
     /** Perform an operation on file descriptor **/
     unsigned ioctl(int request, int argp);
     /** Manipulate file descriptor **/
     unsigned fcntl(int cmd);
     /** Manipulate file descriptor **/
     unsigned fcntl(int cmd, int arg);
+    /** Get a value using ioctl() **/
+    template <class T>
+    void get(int request, T &value) const {
+        this->ioctl(request, &value);
+    }
+    /** Set a value using ioctl() **/
+    template <class T>
+    void set(int request, const T &value) {
+        this->ioctl(request, &value);
+    }
     
 private:
     Stream &operator =(Stream &other)=delete;

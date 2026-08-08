@@ -28,6 +28,8 @@ public:
     File(const File &dir, const char * filename);
     /** Open file for reading relative to this directory **/
     File(const File &dir, const char * filename, int flags);
+    /** Duplicate a file descriptor **/
+    File(const File &other);
     /** Set an extended attribute value **/
     void setAttribute(const char * name, const char * value, size_t size, int flags=0);
     /** Retrieve an extended attribute value **/

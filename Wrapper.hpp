@@ -23,13 +23,23 @@ public:
     
 protected:
     /** Perform an operation on file descriptor **/
-    unsigned ioctl(int request);
+    unsigned ioctl(int request) {
+        return stream.ioctl(request, nullptr);
+    }
     /** Perform an operation on file descriptor **/
-    unsigned ioctl(int request, void * argp) const;
-    /** Perform an operation on file descriptor **/
-    unsigned ioctl(int request, const void * argp);
-    /** Perform an operation on file descriptor **/
-    unsigned ioctl(int request, int argp);
+    unsigned ioctl(int request, int arg) {
+        return stream.ioctl(request, arg);
+    }
+    /** Get a value using ioctl() **/
+    template <class T>
+    void get(int request, T &value) const {
+        stream.get<T>(request, value);
+    }
+    /** Set a value using ioctl() **/
+    template <class T>
+    void set(int request, const T &arg) {
+        stream.set<T>(request, arg);
+    }
     
 private:
     Stream &stream;
