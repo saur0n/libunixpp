@@ -2,7 +2,7 @@
  *  libunix++: C++ wrapper for Linux system calls
  *  Generic stream operations
  *  
- *  © 2019—2025, Sauron <libunixpp@saur0n.science>
+ *  © 2019—2026, Sauron <libunixpp@saur0n.science>
  ******************************************************************************/
 
 #ifndef __UNIXPP_STREAM_HPP
@@ -13,11 +13,9 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #include "AtomicBool.hpp"
+#include "InterruptedException.hpp"
 
 namespace upp {
-
-/**/
-class InterruptedException {};
 
 /** Base class for all descriptor-based objects **/
 class Stream {
