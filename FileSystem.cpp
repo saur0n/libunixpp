@@ -88,7 +88,9 @@ void FileSystem::mknod(const char * pathname, mode_t mode, dev_t dev) {
 }
 
 ssize_t FileSystem::readlink(const char * pathname, char * buf, size_t bufsiz) {
-    THROW_NOT_IMPLEMENTED;
+    ssize_t retval=::readlink(pathname, buf, bufsiz);
+    THROW_SYSTEM_ERROR_IF(retval<0);
+    return retval;
 }
 
 void FileSystem::rename(const char * oldpath, const char * newpath) {

@@ -10,6 +10,7 @@
 #include "unittest.hpp"
 
 static const char * TEST_FILE="./rogue.tmp";
+static const char * SYMLINK_TARGET="/tmp/rogue.linked";
 
 static mode_t getPermissions(const char * pathname) {
     struct stat sb;
@@ -31,10 +32,15 @@ static void run() {
     assert(FileSystem::access(TEST_FILE, W_OK));
     assert(FileSystem::access("/proc/version", F_OK));
     assert(FileSystem::access("/proc/version", R_OK));
-    assert(FileSystem::access("/proc/version", W_OK)==false);
+    if (geteuid()!=0)
+        assert(FileSystem::access("/proc/version", W_OK)==false);
     assert(FileSystem::access("/proc/sauron", F_OK)==false);
     THROWS(FileSystem::access("/proc/sauron", R_OK), ENOENT);
     THROWS(FileSystem::access("/proc/sauron", W_OK), ENOENT);
+    File tmpDir("/tmp", O_RDONLY|O_DIRECTORY);
+    assert(tmpDir.access("rogue-3.tmp", F_OK));
+    assert(tmpDir.access("rogue-nonexistent.tmp", F_OK)==false);
+    THROWS(tmpDir.access("rogue-nonexistent.tmp", R_OK), ENOENT);
     
     // chmod()
     FileSystem::chmod(TEST_FILE, 0604);
@@ -56,8 +62,8 @@ static void run() {
     THROWS(FileSystem::link(TEST_FILE, "/proc/version"), EEXIST);
     
     // lstat()
-    if (false==FileSystem::access("/tmp/rogue-7.tmp"))
-        FileSystem::symlink(TEST_FILE, "/tmp/rogue-7.tmp");
+    ::unlink("/tmp/rogue-7.tmp");
+    FileSystem::symlink(SYMLINK_TARGET, "/tmp/rogue-7.tmp");
     struct stat lsbuf;
     FileSystem::lstat("/tmp/rogue-7.tmp", &lsbuf);
     assert(S_ISLNK(lsbuf.st_mode));
@@ -82,6 +88,11 @@ static void run() {
     THROWS(FileSystem::mknod("/nonexistent/a", S_IFIFO|0700, 0), ENOENT);
     
     // readlink()
+    char linkTarget[256];
+    ssize_t linkLength=FileSystem::readlink("/tmp/rogue-7.tmp", linkTarget, sizeof(linkTarget));
+    assert(linkLength==ssize_t(strlen(SYMLINK_TARGET)));
+    assert(0==strncmp(linkTarget, SYMLINK_TARGET, size_t(linkLength)));
+    THROWS(FileSystem::readlink("/nonexistent", linkTarget, sizeof(linkTarget)), ENOENT);
     
     // rename()
     ::unlink("/tmp/rogue-5.tmp");
@@ -113,10 +124,10 @@ static void run() {
     
     // symlink()
     ::unlink("/tmp/rogue-3.tmp");
-    FileSystem::symlink(TEST_FILE, "/tmp/rogue-3.tmp");
+    FileSystem::symlink(SYMLINK_TARGET, "/tmp/rogue-3.tmp");
     assert(FileSystem::access("/tmp/rogue-3.tmp", F_OK));
     THROWS(FileSystem::symlink(TEST_FILE, "/proc/version"), EEXIST);
-    THROWS(FileSystem::symlink("/nonexistent", "/nonexistent2"), EACCES);
+    THROWS(FileSystem::symlink("/nonexistent", "/nonexistent/child"), ENOENT);
     
     // sync()
     FileSystem::sync();
@@ -129,7 +140,7 @@ static void run() {
     // unlink()
     FileSystem::unlink("/tmp/rogue-3.tmp");
     assert(!FileSystem::access("/tmp-rogue-3", F_OK));
-    THROWS(FileSystem::unlink("/proc/version"), EACCES);
+    THROWS(FileSystem::unlink("/proc/version"), geteuid()==0?EPERM:EACCES);
     THROWS(FileSystem::unlink("/nonexistent"), ENOENT);
     
     // utimes()
@@ -143,14 +154,14 @@ static void run() {
     // setAttribute()
     FileSystem::setAttribute(TEST_FILE, "user.color", "#9F5044", 7UL);
     THROWS(FileSystem::setAttribute(TEST_FILE, "unsupported.z", "1", 1UL), ENOTSUP);
-    THROWS(FileSystem::setAttribute("/proc/version", "user.z", "1", 1UL), EACCES);
+    THROWS(FileSystem::setAttribute("/proc/version", "user.z", "1", 1UL), ENOTSUP);
     
     // getAttribute()
     char xattrvalue[32];
     assert(FileSystem::getAttribute(TEST_FILE, "user.color", xattrvalue, 32UL)==7UL);
     assert(0==strcmp(xattrvalue, "#9F5044"));
     THROWS(FileSystem::getAttribute(TEST_FILE, "unsupported.z", xattrvalue, 32UL), ENOTSUP);
-    THROWS(FileSystem::setAttribute("/proc/version", "user.z", xattrvalue, 32UL), EACCES);
+    THROWS(FileSystem::setAttribute("/proc/version", "user.z", xattrvalue, 32UL), ENOTSUP);
     
     // listAttributes()
     
@@ -158,7 +169,7 @@ static void run() {
     FileSystem::removeAttribute(TEST_FILE, "user.color");
     THROWS(FileSystem::removeAttribute(TEST_FILE, "user.nonexistent"), ENODATA);
     THROWS(FileSystem::removeAttribute("/nonexistent", "user.color"), ENOENT);
-    THROWS(FileSystem::removeAttribute("/proc/version", "user.z"), EACCES);
+    THROWS(FileSystem::removeAttribute("/proc/version", "user.z"), ENOTSUP);
     
     // chdir()
     FileSystem::chdir("/usr");

@@ -100,7 +100,17 @@ void File::rename(const char * oldpath, const char * newpath, int flags) {
 #endif
 
 bool File::access(const char * pathname, int mode, int flags) {
-    return F_OK==faccessat(getDescriptor(), pathname, mode, flags);
+    int retval=faccessat(getDescriptor(), pathname, mode, flags);
+    if (retval<0) {
+        if ((mode==F_OK)&&(errno==ENOENT))
+            return false;
+        else if (errno==EACCES)
+            return false;
+        else
+            THROW_SYSTEM_ERROR;
+    }
+    else
+        return true;
 }
 
 void File::chmod(mode_t mode) {
