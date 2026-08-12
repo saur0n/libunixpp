@@ -72,6 +72,27 @@ public:
     };
     /** Structure describing an inotify event **/
     using Event=::inotify_event;
+    /** Helper class for parsing read() results **/
+    class Iterator {
+    public:
+        Iterator(const char * ptr, size_t n) : ptr(ptr), end(ptr+n) {}
+        const Event &operator *() {
+            return *reinterpret_cast<const Event *>(ptr);
+        }
+        const Event * operator ->() {
+            return reinterpret_cast<const Event *>(ptr);
+        }
+        void operator ++() {
+            ptr+=sizeof(Event)+operator *().len;
+        }
+        operator bool() const {
+            return ptr<end;
+        }
+        
+    private:
+        const char * ptr;
+        const char * end;
+    };
     /** Initialize a file watcher **/
     FileWatcher();
     /** Initialize a file watcher with flags **/

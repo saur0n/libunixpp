@@ -11,6 +11,7 @@
 
 using std::cerr;
 using std::cout;
+using std::endl;
 using std::map;
 using upp::FileWatcher;
 
@@ -27,15 +28,13 @@ int main(int argc, char ** argv) {
         for (;;) {
             char buffer[4096];
             size_t n=fileWatcher.read(buffer, sizeof(buffer));
-            for (char * p=buffer; p<buffer+n;) {
-                FileWatcher::Event * event=reinterpret_cast<FileWatcher::Event *>(p);
-                cout << watches[event->wd] << ": ";
-                if (event->mask&FileWatcher::MODIFY)
+            for (FileWatcher::Iterator ei(buffer, n); ei; ++ei) {
+                cout << watches[ei->wd] << ": ";
+                if (ei->mask&FileWatcher::MODIFY)
                     cout << "modified ";
-                if (event->mask&FileWatcher::ATTRIB)
+                if (ei->mask&FileWatcher::ATTRIB)
                     cout << "attributes changed ";
                 cout << "\n";
-                p+=sizeof(FileWatcher::Event)+event->len;
             }
         }
         
