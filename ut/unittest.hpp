@@ -27,7 +27,7 @@ struct UnitTest {
     } \
     catch (const std::system_error &se) { \
         auto &code=se.code(); \
-        if ((code.category()!=std::system_category())||(code.value()!=expected)) \
+        if ((code.category()!=std::system_category())||(code.value()!=(expected))) \
             throw; \
     }
 #define REGISTER(name, run) \
