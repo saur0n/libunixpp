@@ -164,6 +164,16 @@ static void run() {
     THROWS(FileSystem::setAttribute("/proc/version", "user.z", xattrvalue, 32UL), ENOTSUP);
     
     // listAttributes()
+    char xattrlist[256];
+    size_t xattrlistSize=FileSystem::listAttributes(TEST_FILE, xattrlist, sizeof(xattrlist));
+    bool colorAttributeFound=false;
+    for (size_t offset=0; offset<xattrlistSize; offset+=strlen(xattrlist+offset)+1) {
+        if (0==strcmp(xattrlist+offset, "user.color"))
+            colorAttributeFound=true;
+    }
+    assert(colorAttributeFound);
+    THROWS(FileSystem::listAttributes("/nonexistent", xattrlist, sizeof(xattrlist)), ENOENT);
+    THROWS(FileSystem::listAttributes("/proc/version", xattrlist, sizeof(xattrlist)), ENOTSUP);
     
     // removeAttribute()
     FileSystem::removeAttribute(TEST_FILE, "user.color");
